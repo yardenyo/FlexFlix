@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+// Routes
+const userRoutes = require("./routes/userRoutes");
+
 // Load env variables
 require("dotenv").config();
 
@@ -30,9 +33,8 @@ async function connectToDB() {
   }
 }
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// Routes middleware
+app.use("/users", userRoutes);
 
 connectToDB().then(() => {
   app.listen(port, () => console.log(`Server is running on port: ${port}`));
