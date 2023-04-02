@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 // Load env variables
 require("dotenv").config();
@@ -9,7 +10,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Variables
 const uri = process.env.ATLAS_URI;
@@ -27,6 +29,10 @@ async function connectToDB() {
     console.log(err);
   }
 }
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
 connectToDB().then(() => {
   app.listen(port, () => console.log(`Server is running on port: ${port}`));
