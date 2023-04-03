@@ -1,6 +1,6 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 // Routes
@@ -29,13 +29,17 @@ async function connectToDB() {
     });
     console.log("Connected to MongoDB Atlas");
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }
 
 // Routes middleware
 app.use("/users", userRoutes);
 
-connectToDB().then(() => {
-  app.listen(port, () => console.log(`Server is running on port: ${port}`));
-});
+connectToDB()
+  .then(() => {
+    app.listen(port, () => console.log(`Server is running on port: ${port}`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });
