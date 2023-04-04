@@ -1,10 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+import express from "express";
+import cors from "cors";
+import mongoose, { ConnectOptions } from "mongoose";
 
 // Routes
-const userRoutes = require("./routes/userRoutes");
+import userRoutes from "./routes/userRoutes";
 
 // Load env variables
 require("dotenv").config();
@@ -13,21 +12,22 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // Variables
-const uri = process.env.ATLAS_URI;
+const uri = process.env.ATLAS_URI || "";
 const port = process.env.SERVER_PORT || 5000;
 
 // Connect to MongoDB Atlas
 async function connectToDB() {
   try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Connected to MongoDB Atlas");
+    await mongoose
+      .connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      } as ConnectOptions)
+      .then(() => {
+        console.log("Connected to MongoDB Atlas");
+      });
   } catch (err) {
     throw err;
   }
