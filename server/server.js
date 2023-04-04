@@ -1,6 +1,10 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
+// Routes
+const userRoutes = require("./routes/userRoutes");
 
 // Load env variables
 require("dotenv").config();
@@ -9,7 +13,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // Variables
 const uri = process.env.ATLAS_URI;
@@ -24,10 +29,17 @@ async function connectToDB() {
     });
     console.log("Connected to MongoDB Atlas");
   } catch (err) {
-    console.log(err);
+    throw err;
   }
 }
 
-connectToDB().then(() => {
-  app.listen(port, () => console.log(`Server is running on port: ${port}`));
-});
+// Routes middleware
+app.use("/users", userRoutes);
+
+connectToDB()
+  .then(() => {
+    app.listen(port, () => console.log(`Server is running on port: ${port}`));
+  })
+  .catch((err) => {
+    console.log(err);
+  });
