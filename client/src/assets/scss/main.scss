@@ -15,5 +15,15 @@ html {
 		font-style: normal;
 		/* variable */
 		background: $background;
+		color: $text;
+		font-family: $fontFamily;
+		line-height: $fontSize;
+		font-size: $fontSize;
+		font-weight: $fontWeight;
+	}
+
+	#app {
+		width: 100%;
+		height: 100%;
 	}
 }
