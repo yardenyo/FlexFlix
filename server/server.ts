@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import mongoose, { ConnectOptions } from "mongoose";
+import connectToDB from "./config/database";
 
 // Routes
 import userRoutes from "./routes/userRoutes";
@@ -14,24 +14,7 @@ const app = express();
 app.use(cors());
 
 // Variables
-const uri = process.env.ATLAS_URI || "";
 const port = process.env.SERVER_PORT || 5000;
-
-// Connect to MongoDB Atlas
-async function connectToDB() {
-  try {
-    await mongoose
-      .connect(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      } as ConnectOptions)
-      .then(() => {
-        console.log("Connected to MongoDB Atlas");
-      });
-  } catch (err) {
-    throw err;
-  }
-}
 
 // Routes middleware
 app.use("/users", userRoutes);

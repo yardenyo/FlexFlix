@@ -4,17 +4,24 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "dev": "concurrently \"tsc -w\" \"nodemon server.ts\"",
-    "start": "nodemon server.ts"
+    "build": "tsc",
+    "dev": "concurrently \"npm run watch:build\" \"npm run watch:prettier\" \"nodemon server.ts\"",
+    "start": "nodemon server.ts",
+    "watch:build": "tsc -w",
+    "watch:prettier": "prettier --write \"src/**/*.{js,ts,json,scss,html}\""
   },
   "author": "yarden yosef",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "mongoose": "^7.0.3"
+    "express-session": "^1.17.3",
+    "mongoose": "^7.0.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
