@@ -1,21 +1,27 @@
-import express, { Express, Request, Response } from "express";
-import User from "../models/userModel";
+import { Request, Response } from "express";
+import User from "../models/users.model";
+import bcrypt from "bcrypt";
 
 const UserController = {
   create: async (req: Request, res: Response) => {
     try {
-      const user = new User({
+      let user = new User({
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
       });
+      const saltRounds = parseInt(process.env.SALT_ROUNDS || "10");
+      const salt = await bcrypt.genSalt(saltRounds);
+      user.password = await bcrypt.hash(user.password, salt);
 
       await user.save();
       res
         .status(200)
         .json({ status: "success", data: user, message: "User created" });
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      res
+        .status(500)
+        .json({ status: "failed", message: "Something went wrong" });
     }
   },
   getAll: async (req: Request, res: Response) => {
