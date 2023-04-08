@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
+import helpers from "../helpers/app.helpers";
 
 const AuthController = {
   login: (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", (err: any, user: any, info: any) => {
-      if (err || !user) {
+      if (err || helpers.isNil(user)) {
         return res.status(400).json({
           message: "Something went wrong",
           status: "failed",
