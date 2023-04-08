@@ -1,6 +1,6 @@
 import Axios from "axios";
 import type { AxiosInstance } from "axios";
-import AxiosMiddleware from "@/helpers/AxiosMiddleware";
+import AxiosMiddleware from "@/helpers/axiosMiddleware.helpers";
 
 declare global {
 	interface Window {

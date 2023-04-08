@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/users.model";
 import bcrypt from "bcrypt";
+import helpers from "../helpers/app.helpers";
 
 const UserController = {
   create: async (req: Request, res: Response) => {
@@ -37,7 +38,7 @@ const UserController = {
   getById: async (req: Request, res: Response) => {
     try {
       const user = await User.findById(req.params.id);
-      if (!user) {
+      if (helpers.isNil(user)) {
         return res
           .status(200)
           .json({ status: "failed", message: "User not found" });
@@ -52,12 +53,11 @@ const UserController = {
   update: async (req: Request, res: Response) => {
     try {
       const user = await User.findById(req.params.id);
-      if (!user) {
+      if (helpers.isNil(user) || !user) {
         return res
           .status(200)
           .json({ status: "failed", message: "User not found" });
       }
-
       user.username = req.body.username || user.username;
       user.email = req.body.email || user.email;
       user.password = req.body.password || user.password;
@@ -73,7 +73,7 @@ const UserController = {
   delete: async (req: Request, res: Response) => {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
-      if (!user) {
+      if (helpers.isNil(user)) {
         return res
           .status(200)
           .json({ status: "failed", message: "User not found" });
