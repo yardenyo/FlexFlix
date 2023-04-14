@@ -1,0 +1,113 @@
+/* eslint-disable vue/no-reserved-component-names */
+/* eslint-disable vue/multi-word-component-names */
+
+import { useMenuStore } from "@/store/menu.store";
+import { useAppStore } from "@/store/app.store";
+import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
+import InputSwitch from "primevue/inputswitch";
+import Sidebar from "primevue/sidebar";
+import Password from "primevue/password";
+import Dropdown from "primevue/dropdown";
+import MultiSelect from "primevue/multiselect";
+import Dialog from "primevue/dialog";
+import Skeleton from "primevue/skeleton";
+import Divider from "primevue/divider";
+import router from "@/router/router";
+import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import resetStore from "@/services/ResetStore";
+import helpers from "@/helpers/app.helpers";
+
+import appApi from "@/api/app.api";
+
+const pinia = createPinia();
+pinia.use(resetStore);
+
+class Boot {
+	app: any;
+	appStore: any;
+	menuStore: any;
+	isAuthenticated: boolean;
+
+	constructor(app: any) {
+		this.app = app;
+		this.appStore;
+		this.menuStore;
+		this.isAuthenticated = false;
+	}
+
+	/**
+	 *
+	 * @param {*} config
+	 * @param {*} generalSettings
+	 */
+
+	async init(config: any, generalSettings: any) {
+		try {
+			this.appStore = useAppStore();
+			this.menuStore = useMenuStore();
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	/**
+	 *
+	 * @returns void
+	 */
+
+	async boot() {
+		return await this.loadAppConfig();
+	}
+
+	middleware(app: any) {
+		app.use(router);
+		app.use(pinia);
+		app.use(PrimeVue, { ripple: true });
+	}
+
+	registerComponents(app: any) {
+		app.component("Button", Button);
+		app.component("InputText", InputText);
+		app.component("InputNumber", InputNumber);
+		app.component("InputSwitch", InputSwitch);
+		app.component("Sidebar", Sidebar);
+		app.component("Password", Password);
+		app.component("Dropdown", Dropdown);
+		app.component("MultiSelect", MultiSelect);
+		app.component("Dialog", Dialog);
+		app.component("Skeleton", Skeleton);
+		app.component("Divider", Divider);
+	}
+
+	/**
+	 *
+	 * @returns void
+	 */
+
+	async loadAppConfig() {
+		const config = await appApi.fetchAppConfig();
+		return await this.loadAppGeneralSettings(config);
+	}
+
+	/**
+	 *
+	 * @param {*} config
+	 * @returns void
+	 */
+	async loadAppGeneralSettings(config: any) {
+		return new Promise((resolve, reject) => {
+			if (!helpers.isNil(config.data.data.routes)) {
+				//? USER IS AUTHENTICATED
+				const generalSettings = appApi.fetchAppGeneralSettings();
+				this.isAuthenticated = true;
+				resolve({ config, generalSettings });
+			}
+			resolve({ config });
+		});
+	}
+}
+
+export default Boot;

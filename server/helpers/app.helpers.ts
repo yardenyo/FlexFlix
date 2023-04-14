@@ -77,6 +77,15 @@ const Helpers = {
       verify.toString().includes("/")
     );
   },
+  getUserTimeZone(): string {
+    let offset = new Date().getTimezoneOffset();
+    let sign = offset > 0 ? "-" : "+";
+    let hours = Math.floor(Math.abs(offset) / 60);
+    return `UTC${sign}${hours}`;
+  },
+  getUserDateTime(): string {
+    return moment().format("YYYY-MM-DD HH:mm:ss");
+  },
 };
 
 export default Helpers;

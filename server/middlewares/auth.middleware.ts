@@ -1,12 +1,11 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req: any, res: any, next: any) => {
-  const token = req.cookies["jwt-token"];
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
-  } else {
+  const token = req.headers["authorization"];
+  const [bearer, jwtToken] = token.split(" ");
+  if (token) {
     jwt.verify(
-      token,
+      jwtToken,
       process.env.AUTH_SECRET || "my-secret",
       (err: any, decoded: any) => {
         if (err) {
@@ -17,6 +16,8 @@ const authMiddleware = (req: any, res: any, next: any) => {
         }
       }
     );
+  } else {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 };
 

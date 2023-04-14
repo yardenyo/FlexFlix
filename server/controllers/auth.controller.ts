@@ -6,10 +6,10 @@ import helpers from "../helpers/app.helpers";
 const AuthController = {
   login: (req: Request, res: Response, next: NextFunction) => {
     passport.authenticate("local", (err: any, user: any, info: any) => {
-      if (err || helpers.isNil(user)) {
+      if (err || helpers.isNil(user) || !user) {
         return res.status(400).json({
           message: "Something went wrong",
-          status: "failed",
+          status: false,
         });
       }
 
@@ -17,7 +17,7 @@ const AuthController = {
         if (err) {
           return res.status(400).json({
             message: "Something went wrong",
-            status: "failed",
+            status: false,
           });
         }
         const token = jwt.sign(
@@ -27,14 +27,25 @@ const AuthController = {
             expiresIn: process.env.ACCESS_TOKEN_ALIVE || "1h",
           }
         );
+        const maxAge = req.body.remember
+          ? 1000 * 60 * 60 * 24 * 30
+          : 1000 * 60 * 60 * 24;
         res.cookie("jwt-token", token, {
-          maxAge: 1000 * 60 * 60 * 24,
+          maxAge,
           httpOnly: true,
         });
         return res.status(200).json({
           message: "Login successful",
-          status: "success",
-          token,
+          status: true,
+          token: {
+            token,
+            maxAge,
+          },
+          user: {
+            email: user.email,
+            username: user.username,
+            password: user.password,
+          },
         });
       });
     })(req, res, next);
@@ -45,13 +56,13 @@ const AuthController = {
       if (err) {
         return res.status(400).json({
           message: "Something went wrong",
-          status: "failed",
+          status: false,
         });
       }
     });
 
     res.clearCookie("jwt-token");
-    res.status(200).json({ message: "Logout successful", status: "success" });
+    res.status(200).json({ message: "Logout successful", status: true });
   },
 };
 

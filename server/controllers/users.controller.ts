@@ -18,19 +18,15 @@ const UserController = {
       await user.save();
       res
         .status(200)
-        .json({ status: "success", data: user, message: "User created" });
+        .json({ status: true, data: user, message: "User created" });
     } catch (err: any) {
-      res
-        .status(500)
-        .json({ status: "failed", message: "Something went wrong" });
+      res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
   getAll: async (req: Request, res: Response) => {
     try {
       const users = await User.find();
-      res
-        .status(200)
-        .json({ status: "success", data: users, message: "All users" });
+      res.status(200).json({ status: true, data: users, message: "All users" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
@@ -38,14 +34,12 @@ const UserController = {
   getById: async (req: Request, res: Response) => {
     try {
       const user = await User.findById(req.params.id);
-      if (helpers.isNil(user)) {
+      if (helpers.isNil(user) || !user) {
         return res
           .status(200)
-          .json({ status: "failed", message: "User not found" });
+          .json({ status: false, message: "User not found" });
       }
-      res
-        .status(200)
-        .json({ status: "success", data: user, message: "User found" });
+      res.status(200).json({ status: true, data: user, message: "User found" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
@@ -56,7 +50,7 @@ const UserController = {
       if (helpers.isNil(user) || !user) {
         return res
           .status(200)
-          .json({ status: "failed", message: "User not found" });
+          .json({ status: false, message: "User not found" });
       }
       user.username = req.body.username || user.username;
       user.email = req.body.email || user.email;
@@ -65,7 +59,7 @@ const UserController = {
       await user.save();
       res
         .status(200)
-        .json({ status: "success", data: user, message: "User updated" });
+        .json({ status: true, data: user, message: "User updated" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
@@ -73,14 +67,14 @@ const UserController = {
   delete: async (req: Request, res: Response) => {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
-      if (helpers.isNil(user)) {
+      if (helpers.isNil(user) || !user) {
         return res
           .status(200)
-          .json({ status: "failed", message: "User not found" });
+          .json({ status: false, message: "User not found" });
       }
       res
         .status(200)
-        .json({ status: "success", data: user, message: "User deleted" });
+        .json({ status: true, data: user, message: "User deleted" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
