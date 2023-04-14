@@ -20,6 +20,10 @@ html {
 		line-height: $fontSize;
 		font-size: $fontSize;
 		font-weight: $fontWeight;
+
+		.view {
+			height: 100vh;
+		}
 	}
 
 	#app {

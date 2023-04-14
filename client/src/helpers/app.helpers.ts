@@ -2,6 +2,16 @@ import { isArray as _isArray, isNaN, isNumber } from "lodash";
 import moment from "moment";
 
 const Helpers = {
+	status(response: any, getMessage: boolean = true, key: string = "msg"): boolean {
+		if (!response.data.status) {
+			if (getMessage) {
+				throw response.data[key ? key : "msg"];
+			}
+			throw "ERROR: Status: false";
+		}
+		return true;
+	},
+
 	isNil(value: any): boolean {
 		return value === undefined || value === null;
 	},
@@ -66,6 +76,9 @@ const Helpers = {
 		const validDate = moment(verify, "DD/MM/YY", true).isValid();
 		const validMonth = moment(verify, "MM/YYYY", true).isValid();
 		return (validDate || validMonth) && !regExp.test(verify) && verify.toString().includes("/");
+	},
+	isValidLoginPassword(password: string): boolean {
+		return /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#/.,$?`|'-_*/%^&*[\]~_,()]{8,}$/.test(password);
 	},
 };
 

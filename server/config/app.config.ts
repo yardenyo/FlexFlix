@@ -4,11 +4,11 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import passport from "passport";
 import passportConfig from "../config/passport.config";
-import authMiddleware from "../middlewares/auth.middleware";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 // Routes
+import appRoutes from "../routes/app.routes";
 import userRoutes from "../routes/users.routes";
 import authRoutes from "../routes/auth.routes";
 
@@ -31,7 +31,8 @@ app.use(
   })
 );
 
-app.use("/users", authMiddleware, userRoutes);
+app.use("/app", appRoutes);
+app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 
 export default app;
