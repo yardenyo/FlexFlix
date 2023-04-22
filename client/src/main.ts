@@ -13,7 +13,7 @@ const app = createApp(App);
 const system = new Boot(app);
 
 system
-	.boot()
+	.boot(app)
 	.then(({ config, generalSettings }: any) => {
 		system.middleware(app);
 		system.registerComponents(app);

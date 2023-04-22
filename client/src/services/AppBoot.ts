@@ -16,11 +16,12 @@ import Skeleton from "primevue/skeleton";
 import Divider from "primevue/divider";
 import router from "@/router/router";
 import { createPinia } from "pinia";
+import { createI18n } from "vue-i18n";
 import PrimeVue from "primevue/config";
 import resetStore from "@/services/ResetStore";
 import helpers from "@/helpers/app.helpers";
-
 import appApi from "@/api/app.api";
+import i18n from "@/services/i18n/index";
 
 const pinia = createPinia();
 pinia.use(resetStore);
@@ -58,14 +59,15 @@ class Boot {
 	 * @returns void
 	 */
 
-	async boot() {
-		return await this.loadAppConfig();
+	async boot(app: any) {
+		return await this.loadAppConfig(app);
 	}
 
 	middleware(app: any) {
 		app.use(router);
 		app.use(pinia);
 		app.use(PrimeVue, { ripple: true });
+		app.use(i18n);
 	}
 
 	registerComponents(app: any) {
@@ -82,12 +84,19 @@ class Boot {
 		app.component("Divider", Divider);
 	}
 
+	getLocale() {
+		const urlPath = window.location.pathname;
+		const urlPathArray = urlPath.split("/");
+		const locale = urlPathArray[1];
+		return locale;
+	}
+
 	/**
 	 *
 	 * @returns void
 	 */
 
-	async loadAppConfig() {
+	async loadAppConfig(app: any) {
 		const config = await appApi.fetchAppConfig();
 		return await this.loadAppGeneralSettings(config);
 	}

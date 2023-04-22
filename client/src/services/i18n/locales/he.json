@@ -1,0 +1,24 @@
+{
+	"en": "אנגלית",
+	"he": "עברית",
+	"login": {
+		"signIn": "היכנס",
+		"emailAddress": "אימייל",
+		"Password": "סיסמה",
+		"invalidCredentials": "מצטערים, לא הצלחנו למצוא חשבון עם כתובת הדואר האלקטרוני והסיסמה האלה. אנא נסה שוב",
+		"rememberMe": "זכור אותי",
+		"dontHaveAccount": "אין לך חשבון?",
+		"signUp": "הרשם",
+		"validEmail": "אנא הכנס כתובת דואר אלקטרוני תקינה",
+		"validPassword": "הסיסמה שלך חייבת להכיל לפחות 8 תווים עם לפחות אות אחת קטנה, אות אחת גדולה וספרה אחת"
+	},
+	"loginFooter": {
+		"contactUs": "שאלות? צור קשר",
+		"FAQ": "שאלות נפוצות",
+		"helpCenter": "מרכז עזרה",
+		"termsOfUse": "תנאי שימוש",
+		"privacyPolicy": "מדיניות פרטיות",
+		"cookiePreferences": "העדפות קוקי",
+		"corporateInformation": "מידע על החברה"
+	}
+}
