@@ -1,7 +1,10 @@
-import { defineConfig } from "vite";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import path from "path";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +16,13 @@ export default defineConfig({
 		environment: "happy-dom",
 		globals: true,
 	},
-	plugins: [vue(), vueJsx()],
+	plugins: [
+		vue(),
+		vueJsx(),
+		VueI18nPlugin({
+			include: resolve(dirname(fileURLToPath(import.meta.url)), "./src/i18n/locales/**"),
+		}),
+	],
 	resolve: {
 		extensions: [".js", ".json", ".vue", ".scss", ".css"],
 		alias: {

@@ -1,10 +1,31 @@
 import { Request, Response } from "express";
+import { body } from "express-validator";
 import User from "../models/users.model";
 import bcrypt from "bcrypt";
 import helpers from "../helpers/app.helpers";
+import validate from "../middlewares/validation.middleware";
 
 const UserController = {
   create: async (req: Request, res: Response) => {
+    const registrationRules = [
+      body("username")
+        .notEmpty()
+        .isString()
+        .isLength({ min: 3 })
+        .withMessage("Username must be at least 3 characters long"),
+      body("email").isEmail().withMessage("Email is not valid"),
+      body("password").custom((value) => {
+        if (!helpers.isValidRegisterPassword(value)) {
+          throw new Error(
+            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number"
+          );
+        }
+        return true;
+      }),
+    ];
+
+    await validate(registrationRules)(req, res, (err: any) => {});
+
     try {
       let user = new User({
         username: req.body.username,
@@ -16,9 +37,14 @@ const UserController = {
       user.password = await bcrypt.hash(user.password, salt);
 
       await user.save();
-      res
-        .status(200)
-        .json({ status: true, data: user, message: "User created" });
+      res.status(200).json({
+        status: true,
+        data: {
+          username: user.username,
+          email: user.email,
+        },
+        message: "User created",
+      });
     } catch (err: any) {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }

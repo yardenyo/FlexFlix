@@ -22,6 +22,12 @@ const Helpers = {
     );
   },
 
+  isValidRegisterPassword(password: string): boolean {
+    return /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9!@#/.,$?`|'-_*/%^&*[\]~_,()]{8,}$/.test(
+      password
+    );
+  },
+
   isNumpty(value: any, _objectsOnly: boolean = false): boolean {
     return typeof value === "number"
       ? false

@@ -1,0 +1,24 @@
+{
+	"en": "English",
+	"he": "Hebrew",
+	"login": {
+		"signIn": "Sign In",
+		"emailAddress": "Email address",
+		"Password": "Password",
+		"invalidCredentials": "Sorry, we couldn't find an account with that email address and password. Please try again.",
+		"rememberMe": "Remember me",
+		"dontHaveAccount": "Don't have an account?",
+		"signUp": "Sign Up",
+		"validEmail": "Please enter a valid email address.",
+		"validPassword": "Your password must contain at least 8 characters with at least one lowercase letter, one uppercase letter, and one digit."
+	},
+	"loginFooter": {
+		"contactUs": "Questions? Contact us.",
+		"FAQ": "FAQ",
+		"helpCenter": "Help Center",
+		"termsOfUse": "Terms of Use",
+		"privacyPolicy": "Privacy",
+		"cookiePreferences": "Cookie Preferences",
+		"corporateInformation": "Corporate Information"
+	}
+}

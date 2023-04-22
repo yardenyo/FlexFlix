@@ -1,38 +1,41 @@
 <template>
-	<div class="login-page view">
-		<div class="logo-section">
+	<div class="login-page" :dir="$i18n.locale === 'he' ? 'rtl' : 'ltr'">
+		<div class="logo-section" @click="router.push('/')">
 			<img class="logo" src="/src/assets/netflix-logo.svg" alt="flexflix logo" />
 		</div>
 		<div class="content">
 			<div class="login-container">
 				<div class="form">
-					<h1 class="title">Sign In</h1>
-					<div class="inputtext-wrapper">
-						<InputText v-model="state.email" placeholder="Email address" />
-						<small v-if="v$.email.$error" class="error-message">
-							{{ v$.email.$errors[0].$message }}
-						</small>
-						<Password v-model="state.password" placeholder="Password" :feedback="false" />
-						<small v-if="v$.password.$error" class="error-message">
-							{{ v$.password.$errors[0].$message }}
-						</small>
+					<h1 class="title">{{ $t("login.signIn") }}</h1>
+					<div>
+						<form class="form-wrapper">
+							<InputText v-model="state.email" :placeholder="$t('login.emailAddress')" />
+							<small v-if="v$.email.$error" class="error-message">
+								{{ v$.email.$errors[0].$message }}
+							</small>
+							<Password v-model="state.password" :placeholder="$t('login.Password')" :feedback="false" />
+							<small v-if="v$.password.$error" class="error-message">
+								{{ v$.password.$errors[0].$message }}
+							</small>
+						</form>
 					</div>
 					<div class="signup">
-						<Button label="Sign In" severity="danger" :loading="loading" @click="login" />
-						<small v-if="invalidCredentials" class="invalid-credentials">Invalid credentials. Please try again</small>
+						<Button :label="$t('login.signIn')" severity="danger" :loading="loading" @click="login" />
+						<small v-if="invalidCredentials" class="invalid-credentials">{{ $t("login.invalidCredentials") }}</small>
 						<div class="signup-wrapper">
 							<div class="remember-section">
 								<input type="checkbox" v-model="state.remember" />
-								<span>Remember me</span>
+								<span>{{ $t("login.rememberMe") }}</span>
 							</div>
 							<div class="signup-link">
-								<span>Don't have an account?</span>
-								<router-link to="/signup">Sign Up</router-link>
+								<span>{{ $t("login.dontHaveAccount") }}</span>
+								<router-link to="/signup">{{ $t("login.signUp") }}</router-link>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<LoginFooter />
 		</div>
 	</div>
 </template>
@@ -45,23 +48,23 @@ import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, email } from "@vuelidate/validators";
 import Helpers from "@/helpers/app.helpers";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import LoginFooter from "@/components/LoginFooter.vue";
 
 const store = useLoginStore();
 const { state, loading } = storeToRefs(store);
 const router = useRouter();
 const invalidCredentials = ref(false);
+const { t } = useI18n();
 
 const rules = reactive({
 	email: {
-		required: helpers.withMessage("Please enter a valid email address.", required),
-		email: helpers.withMessage("Please enter a valid email address.", email),
+		required: helpers.withMessage(t("login.validEmail"), required),
+		email: helpers.withMessage(t("login.validEmail"), email),
 	},
 	password: {
-		required: helpers.withMessage("Your password must contain at least 8 characters with at least one lowercase letter, one uppercase letter, and one digit.", required),
-		validPassword: helpers.withMessage(
-			"Your password must contain at least 8 characters with at least one lowercase letter, one uppercase letter, and one digit.",
-			(value: string) => Helpers.isValidLoginPassword(value),
-		),
+		required: helpers.withMessage(t("login.validPassword"), required),
+		validPassword: helpers.withMessage(t("login.validPassword"), (value: string) => Helpers.isValidLoginPassword(value)),
 	},
 });
 
@@ -84,16 +87,46 @@ async function login() {
 
 <style lang="scss" scoped>
 $logo-section-height: 100px;
-.invalid-credentials {
-	display: block;
-	color: $error-message;
-	font-size: $fontSize;
-	font-weight: 600;
+$footer-section-height: 262px;
+
+.logo-section {
+	height: $logo-section-height;
+	.logo {
+		position: absolute;
+		left: 30px;
+		width: 220px;
+	}
 }
+
+/* For RTL */
+[dir="rtl"] .login-page {
+	direction: rtl;
+}
+
+[dir="rtl"] .logo-section {
+	height: $logo-section-height;
+	.logo {
+		position: absolute;
+		right: 30px;
+		width: 220px;
+	}
+}
+
+.form {
+	text-align: left;
+}
+
+[dir="rtl"] .form {
+	text-align: right;
+}
+
 .login-page {
 	background: url("/src/assets/netflix-bg.jpg");
 	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	position: relative;
+	overflow-x: hidden;
 
 	&::before {
 		content: "";
@@ -106,6 +139,7 @@ $logo-section-height: 100px;
 	}
 
 	.logo-section {
+		cursor: pointer;
 		height: $logo-section-height;
 		.logo {
 			position: absolute;
@@ -115,14 +149,12 @@ $logo-section-height: 100px;
 	}
 	.content {
 		position: relative;
-		height: calc(100% - #{$logo-section-height});
+		height: calc(100% - #{$logo-section-height} - #{$footer-section-height});
 
 		.login-container {
-			position: absolute;
-			left: 50%;
-			transform: translate(-50%);
+			margin: 0 auto;
 			background: $container-dark-bg;
-			min-height: 600px;
+			height: 660px;
 			width: 450px;
 			padding: 60px 68px 40px;
 			border-radius: 5px;
@@ -132,7 +164,7 @@ $logo-section-height: 100px;
 					font-size: 32px;
 					font-weight: 700;
 				}
-				.inputtext-wrapper {
+				.form-wrapper {
 					display: flex;
 					flex-direction: column;
 					gap: 15px;
@@ -194,6 +226,12 @@ $logo-section-height: 100px;
 							border: none;
 							box-shadow: none;
 						}
+					}
+					.invalid-credentials {
+						display: block;
+						color: $error-message;
+						font-size: $fontSize;
+						font-weight: 600;
 					}
 					.signup-wrapper {
 						display: flex;

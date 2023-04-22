@@ -11,7 +11,7 @@ const AppController = {
       };
       res.status(200).json({ status: true, data: appConfig });
     } catch (err: any) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      res.status(500).json({ status: false, message: err.message });
     }
   },
 };
