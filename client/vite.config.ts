@@ -24,7 +24,7 @@ export default defineConfig({
 		}),
 	],
 	resolve: {
-		extensions: [".js", ".json", ".vue", ".scss", ".css"],
+		extensions: [".js", ".ts", ".json", ".vue", ".scss", ".css"],
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
 			img: path.resolve(__dirname, "./public/img"),

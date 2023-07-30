@@ -6,6 +6,8 @@
 		"composite": true,
 		"baseUrl": ".",
 		"ignoreDeprecations": "5.0",
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
 		"paths": {
 			"@/*": ["./src/*"]
 		}

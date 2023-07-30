@@ -1,6 +1,3 @@
-/* eslint-disable vue/no-reserved-component-names */
-/* eslint-disable vue/multi-word-component-names */
-
 import { useMenuStore } from "@/store/menu.store";
 import { useAppStore } from "@/store/app.store";
 import Button from "primevue/button";
