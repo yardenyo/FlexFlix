@@ -24,7 +24,16 @@ const UserController = {
       }),
     ];
 
-    await validate(registrationRules)(req, res, () => {});
+    const passedValidation = await validate(registrationRules)(
+      req,
+      res,
+      () => {}
+    );
+
+    if (!passedValidation) {
+      res.status(500).json({ status: false, message: "Something went wrong" });
+      return;
+    }
 
     try {
       let user = new User({
@@ -96,6 +105,16 @@ const UserController = {
       res
         .status(200)
         .json({ status: true, data: user, message: "User deleted" });
+    } catch (err: any) {
+      res.status(500).json({ message: err.message });
+    }
+  },
+  deleteAll: async function (req: Request, res: Response): Promise<void> {
+    try {
+      const users = await User.deleteMany();
+      res
+        .status(200)
+        .json({ status: true, data: users, message: "All users deleted" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }

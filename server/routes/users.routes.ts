@@ -19,4 +19,7 @@ router.put("/:id", authMiddleware, UserController.update);
 // Delete a user
 router.delete("/:id", authMiddleware, UserController.delete);
 
+// Delete all users
+router.delete("/", authMiddleware, UserController.deleteAll);
+
 export default router;
