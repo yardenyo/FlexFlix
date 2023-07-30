@@ -6,7 +6,7 @@ import helpers from "../helpers/app.helpers";
 import validate from "../middlewares/validation.middleware";
 
 const UserController = {
-  create: async (req: Request, res: Response) => {
+  create: async function (req: Request, res: Response): Promise<void> {
     const registrationRules = [
       body("username")
         .notEmpty()
@@ -24,7 +24,7 @@ const UserController = {
       }),
     ];
 
-    await validate(registrationRules)(req, res, (err: any) => {});
+    await validate(registrationRules)(req, res, () => {});
 
     try {
       let user = new User({
@@ -49,7 +49,7 @@ const UserController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  getAll: async (req: Request, res: Response) => {
+  getAll: async function (req: Request, res: Response): Promise<void> {
     try {
       const users = await User.find();
       res.status(200).json({ status: true, data: users, message: "All users" });
@@ -57,46 +57,41 @@ const UserController = {
       res.status(500).json({ message: err.message });
     }
   },
-  getById: async (req: Request, res: Response) => {
+  getById: async function (req: Request, res: Response): Promise<void> {
     try {
       const user = await User.findById(req.params.id);
       if (helpers.isNil(user) || !user) {
-        return res
-          .status(200)
-          .json({ status: false, message: "User not found" });
+        res.status(200).json({ status: false, message: "User not found" });
       }
       res.status(200).json({ status: true, data: user, message: "User found" });
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
   },
-  update: async (req: Request, res: Response) => {
+  update: async function (req: Request, res: Response): Promise<void> {
     try {
       const user = await User.findById(req.params.id);
       if (helpers.isNil(user) || !user) {
-        return res
-          .status(200)
-          .json({ status: false, message: "User not found" });
-      }
-      user.username = req.body.username || user.username;
-      user.email = req.body.email || user.email;
-      user.password = req.body.password || user.password;
+        res.status(200).json({ status: false, message: "User not found" });
+      } else {
+        user.username = req.body.username || user.username;
+        user.email = req.body.email || user.email;
+        user.password = req.body.password || user.password;
 
-      await user.save();
-      res
-        .status(200)
-        .json({ status: true, data: user, message: "User updated" });
+        await user.save();
+        res
+          .status(200)
+          .json({ status: true, data: user, message: "User updated" });
+      }
     } catch (err: any) {
       res.status(500).json({ message: err.message });
     }
   },
-  delete: async (req: Request, res: Response) => {
+  delete: async function (req: Request, res: Response): Promise<void> {
     try {
       const user = await User.findByIdAndDelete(req.params.id);
       if (helpers.isNil(user) || !user) {
-        return res
-          .status(200)
-          .json({ status: false, message: "User not found" });
+        res.status(200).json({ status: false, message: "User not found" });
       }
       res
         .status(200)

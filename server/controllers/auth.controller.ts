@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import helpers from "../helpers/app.helpers";
 
 const AuthController = {
-  login: (req: Request, res: Response, next: NextFunction) => {
+  login: function (req: Request, res: Response, next: NextFunction): void {
     passport.authenticate("local", (err: any, user: any, info: any) => {
       if (err || helpers.isNil(user) || !user) {
         return res.status(400).json({
@@ -51,7 +51,7 @@ const AuthController = {
     })(req, res, next);
   },
 
-  logout: (req: Request, res: Response) => {
+  logout: function (req: Request, res: Response): void {
     req.logout((err: any) => {
       if (err) {
         return res.status(400).json({

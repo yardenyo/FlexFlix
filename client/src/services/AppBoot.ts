@@ -13,7 +13,6 @@ import Skeleton from "primevue/skeleton";
 import Divider from "primevue/divider";
 import router from "@/router/router";
 import { createPinia } from "pinia";
-import { createI18n } from "vue-i18n";
 import PrimeVue from "primevue/config";
 import resetStore from "@/services/ResetStore";
 import helpers from "@/helpers/app.helpers";
