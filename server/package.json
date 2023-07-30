@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "concurrently \"npm run watch:build\" \"npm run watch:prettier\" \"nodemon dist/server.js\"",
-    "start": "node dist/server.js",
+    "start": "npm run build && node dist/server.js",
     "watch:build": "tsc -w",
     "watch:prettier": "prettier --write \"./*.{js,ts,json,scss,html}\""
   },
