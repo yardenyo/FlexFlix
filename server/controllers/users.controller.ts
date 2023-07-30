@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { body } from "express-validator";
 import User from "../models/users.model";
+import Role from "../models/roles.model";
 import bcrypt from "bcrypt";
 import helpers from "../helpers/app.helpers";
 import validate from "../middlewares/validation.middleware";
@@ -22,6 +23,7 @@ const UserController = {
         }
         return true;
       }),
+      body("role").notEmpty().isString().withMessage("Role is required"),
     ];
 
     const passedValidation = await validate(registrationRules)(
@@ -36,10 +38,18 @@ const UserController = {
     }
 
     try {
+      const role = await Role.findOne({ name: req.body.role });
+      if (helpers.isNil(role) || !role) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
       let user = new User({
         username: req.body.username,
         email: req.body.email,
         password: req.body.password,
+        role: role._id,
       });
       const saltRounds = parseInt(process.env.SALT_ROUNDS || "10");
       const salt = await bcrypt.genSalt(saltRounds);
@@ -51,6 +61,7 @@ const UserController = {
         data: {
           username: user.username,
           email: user.email,
+          role: user.role,
         },
         message: "User created",
       });

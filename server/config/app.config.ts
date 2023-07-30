@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 import appRoutes from "../routes/app.routes";
 import userRoutes from "../routes/users.routes";
 import authRoutes from "../routes/auth.routes";
+import roleRoutes from "../routes/roles.routes";
 
 dotenv.config();
 
@@ -34,5 +35,6 @@ app.use(
 app.use("/app", appRoutes);
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/roles", roleRoutes);
 
 export default app;

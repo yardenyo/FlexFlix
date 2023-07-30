@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import helpers from "../helpers/app.helpers";
-import { IAppConfig, IAppGeneralSettings } from "./../types/app.types";
+import { T_AppConfig, T_AppGeneralSettings } from "./../types/app.types";
 
 const AppController = {
   fetchAppConfig: function (req: Request, res: Response): void {
     try {
-      const appConfig: IAppConfig = {
+      const appConfig: T_AppConfig = {
         timezone: helpers.getUserTimeZone(),
         timezone_datetime: helpers.getUserDateTime(),
         theme: "dark",
@@ -19,7 +19,7 @@ const AppController = {
 
   fetchGeneralSettings: function (req: Request, res: Response): void {
     try {
-      const appGeneralSettings: IAppGeneralSettings = {
+      const appGeneralSettings: T_AppGeneralSettings = {
         try123: "try123",
       };
       res.status(200).json({ status: true, data: appGeneralSettings });
