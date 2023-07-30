@@ -12,7 +12,7 @@ router.post("/", UserController.create);
 router.get("/", authMiddleware, UserController.getAll);
 
 // Get a single user by ID
-router.get("/:id", authMiddleware, authAdminMiddleware, UserController.getById);
+router.get("/:id", authMiddleware, UserController.getById);
 
 // Update a user
 router.put("/:id", authMiddleware, authAdminMiddleware, UserController.update);
