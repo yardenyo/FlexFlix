@@ -1,0 +1,8 @@
+# Ignore development-specific files and directories
+node_modules
+/node_modules
+dist
+/dist
+# Ignore any other unnecessary files or directories
+*.log
+.DS_Store
