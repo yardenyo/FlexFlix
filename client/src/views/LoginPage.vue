@@ -140,12 +140,6 @@ $footer-section-height: 262px;
 
 	.logo-section {
 		cursor: pointer;
-		height: $logo-section-height;
-		.logo {
-			position: absolute;
-			left: 30px;
-			width: 220px;
-		}
 	}
 	.content {
 		position: relative;
@@ -267,6 +261,26 @@ $footer-section-height: 262px;
 						}
 					}
 				}
+			}
+		}
+	}
+}
+
+@media screen and (max-width: $mobile-screen) {
+	.login-page {
+		background: $background;
+		.content {
+			.login-container {
+				width: 100%;
+				height: 100%;
+				padding: 60px 20px 40px;
+			}
+		}
+		.logo-section {
+			height: 60px;
+			.logo {
+				position: absolute;
+				width: 150px;
 			}
 		}
 	}

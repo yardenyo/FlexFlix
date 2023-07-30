@@ -1,6 +1,15 @@
 {
 	"en": "English",
 	"he": "Hebrew",
+	"home": {
+		"mainDiv": {
+			"title": "Unlimited movies, TV shows, and more.",
+			"subtitle": "Watch anywhere. Cancel anytime.",
+			"startWatching": "Ready to watch? Enter your email to create or restart your membership.",
+			"email": "Email address",
+			"getStarted": "Get Started"
+		}
+	},
 	"login": {
 		"signIn": "Sign In",
 		"emailAddress": "Email address",
