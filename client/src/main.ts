@@ -1,5 +1,5 @@
 import App from "@/App.vue";
-import Boot from "@/services/AppBoot.ts";
+import Boot from "@/services/AppBoot";
 import { createApp } from "vue";
 
 // Styles
