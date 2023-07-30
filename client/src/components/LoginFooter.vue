@@ -109,4 +109,33 @@ $footer-section-height: 262px;
 		}
 	}
 }
+
+@media screen and (max-width: $mobile-screen) {
+	.footer {
+		border-top: 1px solid $footer-color;
+		.container {
+			width: 100%;
+			padding: 20px 20px;
+
+			.title {
+				font-size: 14px;
+			}
+
+			.links {
+				padding-bottom: 120px;
+
+				.link {
+					width: 50%;
+					height: 30px;
+					display: flex;
+					align-items: center;
+
+					a {
+						font-size: 12px;
+					}
+				}
+			}
+		}
+	}
+}
 </style>

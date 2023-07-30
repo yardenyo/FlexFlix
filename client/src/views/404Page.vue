@@ -19,12 +19,11 @@ function goBackHome() {
 </script>
 
 <style lang="scss" scoped>
-$logo-section-height: 100px;
 .not-found {
 	.content {
 		background: url("/src/assets/404NotFound.jpg");
 		background-size: cover;
-		height: calc(100vh - #{$logo-section-height});
+		height: calc(100vh);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

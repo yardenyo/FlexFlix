@@ -10,8 +10,8 @@
 		"type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
 		"prettier": "prettier --write src/",
-		"dev": "npm run prettier && vite",
-		"start": "npm run build && npm run dev"
+		"dev": "vite",
+		"start": "npm run prettier && npm run build && npm run dev"
 	},
 	"dependencies": {
 		"@intlify/unplugin-vue-i18n": "^0.10.0",
