@@ -29,7 +29,7 @@
 							</div>
 							<div class="signup-link">
 								<span>{{ $t("login.dontHaveAccount") }}</span>
-								<router-link to="/signup">{{ $t("login.signUp") }}</router-link>
+								<router-link to="/">{{ $t("login.signUp") }}</router-link>
 							</div>
 						</div>
 					</div>
