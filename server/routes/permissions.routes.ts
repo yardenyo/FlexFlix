@@ -27,6 +27,14 @@ router.post(
   PermissionController.assign
 );
 
+// Remove a permission/s from a role
+router.post(
+  "/removePermissions",
+  authMiddleware,
+  authAdminMiddleware,
+  PermissionController.remove
+);
+
 // Update a permission
 router.post(
   "/updatePermission",

@@ -12,6 +12,10 @@ const RolesController = {
         .isString()
         .isLength({ min: 3 })
         .withMessage("Name must be at least 3 characters long"),
+      body("permissions")
+        .optional()
+        .isArray()
+        .withMessage("Permissions must be an array"),
     ];
 
     const passedValidation = await validate(registrationRules)(
@@ -28,6 +32,7 @@ const RolesController = {
     try {
       let role = new Roles({
         name: req.body.name,
+        permissions: req.body.permissions || [],
       });
 
       await role.save();
@@ -36,6 +41,7 @@ const RolesController = {
         message: "Role created successfully",
         data: {
           name: role.name,
+          permissions: role.permissions,
         },
       });
     } catch (error) {

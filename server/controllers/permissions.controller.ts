@@ -125,6 +125,46 @@ const PermissionsController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
+  remove: async function (req: Request, res: Response): Promise<void> {
+    try {
+      const role = await Role.findById(req.body.id);
+      if (helpers.isNil(role) || !role) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      const permissions = await Permission.find({
+        _id: { $in: req.body.permissions },
+      });
+
+      if (helpers.isNumpty(permissions) || !permissions) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      permissions.forEach(async (permission) => {
+        if (role.permissions.includes(permission._id)) {
+          role.permissions.splice(role.permissions.indexOf(permission._id), 1);
+          await role.save();
+        }
+      });
+
+      res.status(200).json({
+        status: true,
+        message: "Permission(s) removed successfully",
+        data: {
+          role: role.name,
+          permissions: permissions.map((permission) => permission.name),
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ status: false, message: "Something went wrong" });
+    }
+  },
   update: async function (req: Request, res: Response): Promise<void> {
     const registrationRules = [
       body("name")
@@ -170,6 +210,27 @@ const PermissionsController = {
   },
   delete: async function (req: Request, res: Response): Promise<void> {
     try {
+      const permission = await Permission.findById(req.body.id);
+      if (helpers.isNil(permission) || !permission) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      const roles = await Role.find({ permissions: permission._id });
+      if (helpers.isNil(roles) || !roles) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      roles.forEach(async (role) => {
+        role.permissions.splice(role.permissions.indexOf(permission._id), 1);
+        await role.save();
+      });
+
       await Permission.findByIdAndDelete(req.body.id);
       res.status(200).json({
         status: true,
@@ -181,7 +242,36 @@ const PermissionsController = {
   },
   deleteAll: async function (req: Request, res: Response): Promise<void> {
     try {
-      await Permission.deleteMany({});
+      const permissions = await Permission.find();
+      if (helpers.isNil(permissions) || !permissions) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      permissions.forEach(async (permission) => {
+        if (permission.name !== "admin") {
+          const roles = await Role.find({ permissions: permission._id });
+          if (helpers.isNil(roles) || !roles) {
+            res
+              .status(500)
+              .json({ status: false, message: "Something went wrong" });
+            return;
+          }
+
+          roles.forEach(async (role) => {
+            role.permissions.splice(
+              role.permissions.indexOf(permission._id),
+              1
+            );
+            await role.save();
+          });
+
+          await Permission.findByIdAndDelete(permission._id);
+        }
+      });
+
       res.status(200).json({
         status: true,
         message: "All permissions deleted successfully",
