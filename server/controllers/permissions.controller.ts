@@ -91,7 +91,7 @@ const PermissionsController = {
       if (helpers.isNil(role) || !role) {
         res
           .status(500)
-          .json({ status: false, message: "Something w1ent wrong" });
+          .json({ status: false, message: "Something went wrong" });
         return;
       }
 
