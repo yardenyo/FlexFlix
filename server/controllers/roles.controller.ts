@@ -55,7 +55,7 @@ const RolesController = {
   },
   getById: async function (req: Request, res: Response): Promise<void> {
     try {
-      const role = await Roles.findById(req.params.id);
+      const role = await Roles.findById(req.body.id);
       res.status(200).json({
         status: true,
         data: role,
@@ -85,7 +85,7 @@ const RolesController = {
     }
 
     try {
-      const role = await Roles.findById(req.params.id);
+      const role = await Roles.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
         res
           .status(500)
@@ -107,7 +107,7 @@ const RolesController = {
   },
   delete: async function (req: Request, res: Response): Promise<void> {
     try {
-      const role = await Roles.findByIdAndDelete(req.params.id);
+      const role = await Roles.findByIdAndDelete(req.body.id);
       res.status(200).json({
         status: true,
         message: "Role deleted successfully",

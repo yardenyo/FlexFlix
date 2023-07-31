@@ -76,7 +76,7 @@ const PermissionsController = {
   },
   getById: async function (req: Request, res: Response): Promise<void> {
     try {
-      const permission = await Permission.findById(req.params.id);
+      const permission = await Permission.findById(req.body.id);
       res.status(200).json({
         status: true,
         data: permission,
@@ -87,7 +87,7 @@ const PermissionsController = {
   },
   assign: async function (req: Request, res: Response): Promise<void> {
     try {
-      const role = await Role.findById(req.params.id);
+      const role = await Role.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
         res
           .status(500)
@@ -105,10 +105,14 @@ const PermissionsController = {
           .json({ status: false, message: "Something went wrong" });
         return;
       }
+
       permissions.forEach(async (permission) => {
-        role.permissions.push(permission._id);
-        await role.save();
+        if (!role.permissions.includes(permission._id)) {
+          role.permissions.push(permission._id);
+          await role.save();
+        }
       });
+
       res.status(200).json({
         status: true,
         message: "Permission(s) assigned successfully",
@@ -148,7 +152,7 @@ const PermissionsController = {
 
     try {
       const permission = await Permission.findByIdAndUpdate(
-        req.params.id,
+        req.body.id,
         {
           name: req.body.name,
           description: req.body.description,
@@ -166,7 +170,7 @@ const PermissionsController = {
   },
   delete: async function (req: Request, res: Response): Promise<void> {
     try {
-      await Permission.findByIdAndDelete(req.params.id);
+      await Permission.findByIdAndDelete(req.body.id);
       res.status(200).json({
         status: true,
         message: "Permission deleted successfully",

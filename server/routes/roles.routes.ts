@@ -6,28 +6,38 @@ import authAdminMiddleware from "../middlewares/authAdmin.middleware";
 const router = express.Router();
 
 // Create a new role
-router.post("/", authMiddleware, authAdminMiddleware, RoleController.create);
+router.post(
+  "/createRole",
+  authMiddleware,
+  authAdminMiddleware,
+  RoleController.create
+);
 
 // Get all roles
-router.get("/", authMiddleware, RoleController.getAll);
+router.get("/getRoles", authMiddleware, RoleController.getAll);
 
 // Get a single role by ID
-router.get("/:id", authMiddleware, RoleController.getById);
+router.get("/getRole", authMiddleware, RoleController.getById);
 
 // Update a role
-router.put("/:id", authMiddleware, authAdminMiddleware, RoleController.update);
+router.post(
+  "/updateRole",
+  authMiddleware,
+  authAdminMiddleware,
+  RoleController.update
+);
 
 // Delete a role
-router.delete(
-  "/:id",
+router.post(
+  "/deleteRole",
   authMiddleware,
   authAdminMiddleware,
   RoleController.delete
 );
 
 // Delete all roles
-router.delete(
-  "/",
+router.post(
+  "/deleteAllRoles",
   authMiddleware,
   authAdminMiddleware,
   RoleController.deleteAll
