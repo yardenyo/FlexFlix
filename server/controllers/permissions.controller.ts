@@ -3,6 +3,7 @@ import helpers from "../helpers/app.helpers";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware";
 import Permission from "../models/permissions.model";
+import Role from "../models/roles.model";
 
 const PermissionsController = {
   create: async function (req: Request, res: Response): Promise<void> {
@@ -37,6 +38,19 @@ const PermissionsController = {
       });
 
       await permission.save();
+
+      const adminRoles = await Role.find({ name: "admin" });
+      if (helpers.isNil(adminRoles) || !adminRoles) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+      adminRoles.forEach(async (role) => {
+        role.permissions.push(permission._id);
+        await role.save();
+      });
+
       res.status(200).json({
         status: true,
         message: "Permission created successfully",
@@ -66,6 +80,42 @@ const PermissionsController = {
       res.status(200).json({
         status: true,
         data: permission,
+      });
+    } catch (error) {
+      res.status(500).json({ status: false, message: "Something went wrong" });
+    }
+  },
+  assign: async function (req: Request, res: Response): Promise<void> {
+    try {
+      const role = await Role.findById(req.params.id);
+      if (helpers.isNil(role) || !role) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+
+      const permissions = await Permission.find({
+        _id: { $in: req.body.permissions },
+      });
+
+      if (helpers.isNumpty(permissions) || !permissions) {
+        res
+          .status(500)
+          .json({ status: false, message: "Something went wrong" });
+        return;
+      }
+      permissions.forEach(async (permission) => {
+        role.permissions.push(permission._id);
+        await role.save();
+      });
+      res.status(200).json({
+        status: true,
+        message: "Permission(s) assigned successfully",
+        data: {
+          role: role.name,
+          permissions: permissions.map((permission) => permission.name),
+        },
       });
     } catch (error) {
       res.status(500).json({ status: false, message: "Something went wrong" });

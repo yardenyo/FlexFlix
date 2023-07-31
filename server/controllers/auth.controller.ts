@@ -44,7 +44,6 @@ const AuthController = {
           user: {
             email: user.email,
             username: user.username,
-            password: user.password,
           },
         });
       });

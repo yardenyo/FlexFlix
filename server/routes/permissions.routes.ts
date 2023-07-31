@@ -19,6 +19,14 @@ router.get("/", authMiddleware, PermissionController.getAll);
 // Get a single permission by ID
 router.get("/:id", authMiddleware, PermissionController.getById);
 
+// Assign a permission/s to a role
+router.post(
+  "/:id/assign",
+  authMiddleware,
+  authAdminMiddleware,
+  PermissionController.assign
+);
+
 // Update a permission
 router.put(
   "/:id",
