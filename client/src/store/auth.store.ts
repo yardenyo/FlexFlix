@@ -2,15 +2,11 @@ import { defineStore } from "pinia";
 import authApi from "@/api/auth.api";
 import { ref, reactive, computed } from "vue";
 import helpers from "@/helpers/app.helpers";
+import { T_Login } from "@/types/auth.types";
 
-type LoginState = {
-	email: string;
-	password: string;
-	remember: boolean;
-};
-export const useLoginStore = defineStore("useLoginStore", () => {
+export const useAuthStore = defineStore("useAuthStore", () => {
 	const loading = ref<boolean>(false);
-	const state = reactive<LoginState>({
+	const state = reactive<T_Login>({
 		email: "",
 		password: "",
 		remember: false,

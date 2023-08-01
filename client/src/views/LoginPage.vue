@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import { storeToRefs } from "pinia";
-import { useLoginStore } from "@/store/login.store";
+import { useAuthStore } from "@/store/auth.store";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, email } from "@vuelidate/validators";
 import Helpers from "@/helpers/app.helpers";
@@ -51,7 +51,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import LoginFooter from "@/components/LoginFooter.vue";
 
-const store = useLoginStore();
+const store = useAuthStore();
 const { state, loading } = storeToRefs(store);
 const router = useRouter();
 const invalidCredentials = ref(false);
