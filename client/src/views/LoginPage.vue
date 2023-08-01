@@ -9,22 +9,22 @@
 					<h1 class="title">{{ $t("login.signIn") }}</h1>
 					<div>
 						<form class="form-wrapper">
-							<InputText v-model="state.email" :placeholder="$t('login.emailAddress')" />
+							<InputText v-model="loginParams.email" :placeholder="$t('login.emailAddress')" />
 							<small v-if="v$.email.$error" class="error-message">
 								{{ v$.email.$errors[0].$message }}
 							</small>
-							<Password v-model="state.password" :placeholder="$t('login.Password')" :feedback="false" />
+							<Password v-model="loginParams.password" :placeholder="$t('login.Password')" :feedback="false" />
 							<small v-if="v$.password.$error" class="error-message">
 								{{ v$.password.$errors[0].$message }}
 							</small>
 						</form>
 					</div>
 					<div class="signup">
-						<Button :label="$t('login.signIn')" severity="danger" :loading="loading" @click="login" />
+						<Button :label="$t('login.signIn')" severity="danger" :loading="state.loading" @click="login" />
 						<small v-if="invalidCredentials" class="invalid-credentials">{{ $t("login.invalidCredentials") }}</small>
 						<div class="signup-wrapper">
 							<div class="remember-section">
-								<input type="checkbox" v-model="state.remember" />
+								<input type="checkbox" v-model="loginParams.remember" />
 								<span>{{ $t("login.rememberMe") }}</span>
 							</div>
 							<div class="signup-link">
@@ -52,7 +52,7 @@ import { useI18n } from "vue-i18n";
 import LoginFooter from "@/components/LoginFooter.vue";
 
 const store = useAuthStore();
-const { state, loading } = storeToRefs(store);
+const { state, loginParams } = storeToRefs(store);
 const router = useRouter();
 const invalidCredentials = ref(false);
 const { t } = useI18n();
@@ -68,7 +68,7 @@ const rules = reactive({
 	},
 });
 
-const v$ = useVuelidate(rules, state);
+const v$ = useVuelidate(rules, loginParams);
 
 async function login() {
 	v$.value.$touch();
@@ -79,7 +79,7 @@ async function login() {
 			invalidCredentials.value = false;
 			router.push("/");
 		})
-		.catch((err) => {
+		.catch(() => {
 			invalidCredentials.value = true;
 		});
 }

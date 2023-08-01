@@ -3,19 +3,23 @@ import authApi from "@/api/auth.api";
 import { ref, reactive, computed } from "vue";
 import helpers from "@/helpers/app.helpers";
 import { T_Login } from "@/types/auth.types";
+import { S_State } from "@/types/system.types";
 
 export const useAuthStore = defineStore("useAuthStore", () => {
-	const loading = ref<boolean>(false);
-	const state = reactive<T_Login>({
+	const state = reactive<S_State>({
+		loading: false,
+	});
+
+	const loginParams = reactive<T_Login>({
 		email: "",
 		password: "",
 		remember: false,
 	});
 
 	async function stateLogin() {
-		loading.value = true;
+		state.loading = true;
 		return await authApi
-			.login(state)
+			.login(loginParams)
 			.then((res) => {
 				helpers.status(res);
 				localStorage.setItem("jwt-token", res.data.token.token);
@@ -28,13 +32,13 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				loading.value = false;
+				state.loading = false;
 			});
 	}
 
 	return {
-		loading,
 		state,
+		loginParams,
 		stateLogin,
 	};
 });

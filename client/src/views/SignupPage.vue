@@ -5,12 +5,12 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import { useAuthStore } from "@/store/auth.store";
+import { useUsersStore } from "@/store/users.store";
 import Helpers from "@/helpers/app.helpers";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const store = useAuthStore();
+const store = useUsersStore();
 const { state, loading } = storeToRefs(store);
 const router = useRouter();
 const { t } = useI18n();
