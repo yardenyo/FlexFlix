@@ -45,6 +45,8 @@ class Boot {
 		try {
 			this.appStore = useAppStore();
 			this.menuStore = useMenuStore();
+
+			this.appStore.updateAppConfig(config);
 		} catch (error) {
 			console.error(error);
 		}
