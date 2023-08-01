@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth.store";
 import { useVuelidate } from "@vuelidate/core";
@@ -83,6 +83,11 @@ async function login() {
 			invalidCredentials.value = true;
 		});
 }
+
+onBeforeUnmount(() => {
+	invalidCredentials.value = false;
+	store.$reset();
+});
 </script>
 
 <style lang="scss" scoped>
