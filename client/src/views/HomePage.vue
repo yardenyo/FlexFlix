@@ -62,11 +62,11 @@ function signUp() {
 	v$.value.$touch();
 	if (v$.value.$invalid) return;
 	console.log("sign up", state);
-	router.push(`${locale}/signup`);
+	router.push({ name: "Signup" });
 }
 
 function signIn() {
-	router.push(`${locale}/login`);
+	router.push({ name: "Login" });
 }
 </script>
 

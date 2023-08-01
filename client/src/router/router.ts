@@ -13,14 +13,21 @@ router.beforeEach((to, from, next) => {
 	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 	const requiresRedirect = to.matched.some((record) => record.meta.requiresRedirect);
 
+	const locale = to.params.locale || Tr.guessDefaultLocale();
+
+	if (!to.params.locale) {
+		const pathWithLocale = `/${locale}${to.path}`;
+		next({ ...to, path: pathWithLocale, params: { ...to.params, locale } });
+		return;
+	}
+
 	if (requiresAuth && !isAuthenticated) {
 		next({
-			path: `/${Tr.guessDefaultLocale()}/login`,
-			query: { redirect: to.fullPath },
+			path: `/${locale}/login`,
 		});
 	} else if (requiresRedirect) {
 		next({
-			path: `/${Tr.guessDefaultLocale()}/redirected-page`, // Change this to your desired redirected page
+			path: `/${locale}/`,
 		});
 	} else {
 		next();
