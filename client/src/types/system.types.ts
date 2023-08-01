@@ -9,3 +9,9 @@ export type S_AppConfig = {
 	routes: any[];
 	authenticated: boolean;
 };
+
+export type S_Login = {
+	email: string;
+	password: string;
+	remember: boolean;
+};

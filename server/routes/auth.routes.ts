@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/login", AuthController.login);
 
 // Logout
-router.get("/logout", AuthController.logout);
+router.post("/logout", AuthController.logout);
 
 export default router;

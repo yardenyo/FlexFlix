@@ -12,6 +12,7 @@
 	},
 	"login": {
 		"signIn": "Sign In",
+		"signOut": "Log Out",
 		"emailAddress": "Email address",
 		"Password": "Password",
 		"invalidCredentials": "Sorry, we couldn't find an account with that email address and password. Please try again.",
