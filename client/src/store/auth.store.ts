@@ -22,10 +22,6 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 			.login(loginPayload)
 			.then((res) => {
 				helpers.status(res);
-				localStorage.setItem("jwt-token", res.data.token.token);
-				const now = new Date();
-				const expirationTime = new Date(now.getTime() + res.data.token.maxAge);
-				localStorage.setItem("expirationTime", expirationTime.toISOString());
 				return res;
 			})
 			.catch((err) => {

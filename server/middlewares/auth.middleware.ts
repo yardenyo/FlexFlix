@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = (req: any, res: any, next: any) => {
-  const token = req.headers["authorization"];
-  const [bearer, jwtToken] = token.split(" ");
+  const token: string | undefined = req.cookies.access_token;
   if (token) {
     jwt.verify(
-      jwtToken,
+      token,
       process.env.AUTH_SECRET || "my-secret",
       (err: any, decoded: any) => {
         if (err) {

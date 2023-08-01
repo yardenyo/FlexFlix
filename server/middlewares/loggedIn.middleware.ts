@@ -6,11 +6,10 @@ const loggedInMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token: String | undefined = req.headers["authorization"];
+  const token: string | undefined = req.cookies.access_token;
   if (token) {
-    const [bearer, jwtToken] = token.split(" ");
     jwt.verify(
-      jwtToken,
+      token,
       process.env.AUTH_SECRET || "my-secret",
       (err: any, decoded: any) => {
         if (err) {

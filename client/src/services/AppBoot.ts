@@ -93,8 +93,8 @@ class Boot {
 	 */
 
 	async loadAppConfig(app: any) {
-		const config = await appApi.fetchAppConfig();
-		return await this.loadAppGeneralSettings(config);
+		const response = await appApi.fetchAppConfig();
+		return await this.loadAppGeneralSettings(response.data.data);
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Boot {
 	 */
 	async loadAppGeneralSettings(config: any) {
 		return new Promise((resolve, reject) => {
-			if (!helpers.isNil(config.data.data.routes)) {
+			if (config.authenticated) {
 				//? USER IS AUTHENTICATED
 				const generalSettings = appApi.fetchAppGeneralSettings();
 				this.isAuthenticated = true;

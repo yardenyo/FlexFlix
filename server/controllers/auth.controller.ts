@@ -30,17 +30,14 @@ const AuthController = {
         const maxAge = req.body.remember
           ? 1000 * 60 * 60 * 24 * 30
           : 1000 * 60 * 60 * 24;
-        res.cookie("jwt-token", token, {
+        res.cookie("access_token", token, {
           maxAge,
           httpOnly: true,
         });
+
         return res.status(200).json({
           message: "Login successful",
           status: true,
-          token: {
-            token,
-            maxAge,
-          },
           user: {
             email: user.email,
             username: user.username,
