@@ -8,14 +8,22 @@ const router = createRouter({
 	routes,
 });
 
-const loginPath = `/${Tr.guessDefaultLocale()}/login`;
-const unguardedRoutes = [loginPath, "/en/login", "/he/login"];
 router.beforeEach((to, from, next) => {
 	const isAuthenticated = !helpers.isNil(localStorage.getItem("jwt-token"));
-	if (isAuthenticated || unguardedRoutes.includes(to.path)) {
-		next();
+	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
+	const requiresRedirect = to.matched.some((record) => record.meta.requiresRedirect);
+
+	if (requiresAuth && !isAuthenticated) {
+		next({
+			path: `/${Tr.guessDefaultLocale()}/login`,
+			query: { redirect: to.fullPath },
+		});
+	} else if (requiresRedirect) {
+		next({
+			path: `/${Tr.guessDefaultLocale()}/redirected-page`, // Change this to your desired redirected page
+		});
 	} else {
-		next(loginPath);
+		next();
 	}
 });
 

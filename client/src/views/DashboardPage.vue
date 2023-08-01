@@ -1,5 +1,5 @@
 <template>
-	<div class="sign-up" :dir="$i18n.locale === 'he' ? 'rtl' : 'ltr'">1234</div>
+	<div class="dashboard">1234</div>
 </template>
 
 <script setup lang="ts">
@@ -16,13 +16,4 @@ const router = useRouter();
 const { t } = useI18n();
 </script>
 
-<style scoped lang="scss">
-.sign-up {
-	background: url("/src/assets/netflix-bg.jpg");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	position: relative;
-	overflow-x: hidden;
-}
-</style>
+<style scoped lang="scss"></style>

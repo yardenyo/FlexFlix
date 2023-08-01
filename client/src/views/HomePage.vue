@@ -17,10 +17,10 @@
 					<div class="start-watching">{{ t("home.mainDiv.startWatching") }}</div>
 					<div class="email-input-wrapper">
 						<div class="email-input">
-							<InputText v-model="state.firstEmail" :placeholder="$t('login.emailAddress')" />
-							<small v-if="v$.firstEmail.$error" class="error-message">
+							<InputText v-model="state.email" :placeholder="$t('login.emailAddress')" />
+							<small v-if="v$.email.$error" class="error-message">
 								<i class="pi pi-times-circle"></i>
-								{{ v$.firstEmail.$errors[0].$message }}
+								{{ v$.email.$errors[0].$message }}
 							</small>
 						</div>
 						<div class="get-started">
@@ -46,11 +46,11 @@ const locale = localStorage.getItem("user-locale");
 const router = useRouter();
 
 const state = reactive({
-	firstEmail: "",
+	email: "",
 });
 
 const rules = reactive({
-	firstEmail: {
+	email: {
 		required: helpers.withMessage(t("login.validEmail"), required),
 		email: helpers.withMessage(t("login.validEmail"), email),
 	},
@@ -62,7 +62,7 @@ function signUp() {
 	v$.value.$touch();
 	if (v$.value.$invalid) return;
 	console.log("sign up", state);
-	// router.push(`${locale}/signup`);
+	router.push(`${locale}/signup`);
 }
 
 function signIn() {

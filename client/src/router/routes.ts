@@ -27,9 +27,20 @@ const routes = [
 				component: () => import("@/views/LoginPage.vue"),
 			},
 			{
-				path: "Signup",
+				path: "signup",
 				name: "Signup",
 				component: () => import("@/views/SignupPage.vue"),
+				meta: {
+					requiresRedirect: true,
+				},
+			},
+			{
+				path: "dashboard",
+				name: "Dashboard",
+				component: () => import("@/views/DashboardPage.vue"),
+				meta: {
+					requiresAuth: true,
+				},
 			},
 		],
 	},
