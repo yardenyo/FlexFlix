@@ -12,6 +12,10 @@ const RolesController = {
         .isString()
         .isLength({ min: 3 })
         .withMessage("Name must be at least 3 characters long"),
+      body("permissions")
+        .optional()
+        .isArray()
+        .withMessage("Permissions must be an array"),
     ];
 
     const passedValidation = await validate(registrationRules)(
@@ -28,6 +32,7 @@ const RolesController = {
     try {
       let role = new Roles({
         name: req.body.name,
+        permissions: req.body.permissions || [],
       });
 
       await role.save();
@@ -36,6 +41,7 @@ const RolesController = {
         message: "Role created successfully",
         data: {
           name: role.name,
+          permissions: role.permissions,
         },
       });
     } catch (error) {
@@ -55,7 +61,7 @@ const RolesController = {
   },
   getById: async function (req: Request, res: Response): Promise<void> {
     try {
-      const role = await Roles.findById(req.params.id);
+      const role = await Roles.findById(req.body.id);
       res.status(200).json({
         status: true,
         data: role,
@@ -85,7 +91,7 @@ const RolesController = {
     }
 
     try {
-      const role = await Roles.findById(req.params.id);
+      const role = await Roles.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
         res
           .status(500)
@@ -107,7 +113,7 @@ const RolesController = {
   },
   delete: async function (req: Request, res: Response): Promise<void> {
     try {
-      const role = await Roles.findByIdAndDelete(req.params.id);
+      const role = await Roles.findByIdAndDelete(req.body.id);
       res.status(200).json({
         status: true,
         message: "Role deleted successfully",

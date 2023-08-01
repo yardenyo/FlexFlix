@@ -79,7 +79,7 @@ const UserController = {
   },
   getById: async function (req: Request, res: Response): Promise<void> {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.body.id);
       if (helpers.isNil(user) || !user) {
         res.status(200).json({ status: false, message: "User not found" });
       }
@@ -90,7 +90,7 @@ const UserController = {
   },
   update: async function (req: Request, res: Response): Promise<void> {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.body.id);
       if (helpers.isNil(user) || !user) {
         res.status(200).json({ status: false, message: "User not found" });
       } else {
@@ -109,7 +109,7 @@ const UserController = {
   },
   delete: async function (req: Request, res: Response): Promise<void> {
     try {
-      const user = await User.findByIdAndDelete(req.params.id);
+      const user = await User.findByIdAndDelete(req.body.id);
       if (helpers.isNil(user) || !user) {
         res.status(200).json({ status: false, message: "User not found" });
       }

@@ -2,16 +2,15 @@ import { defineStore } from "pinia";
 import usersApi from "@/api/users.api";
 import { ref, reactive, computed } from "vue";
 import helpers from "@/helpers/app.helpers";
+import { T_CreateUser } from "@/types/users.types";
 
-type CreateUser = {
-	email: string;
-	password: string;
-};
 export const useUsersStore = defineStore("useUsersStore", () => {
 	const loading = ref<boolean>(false);
-	const createUserPayload = reactive<CreateUser>({
+	const createUserPayload = reactive<T_CreateUser>({
+		username: "",
 		email: "",
 		password: "",
+		role: "",
 	});
 
 	async function stateCreateUser() {

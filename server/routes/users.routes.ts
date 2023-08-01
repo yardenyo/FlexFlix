@@ -6,28 +6,33 @@ import authAdminMiddleware from "../middlewares/authAdmin.middleware";
 const router = express.Router();
 
 // Create a new user
-router.post("/", UserController.create);
+router.post("/createUser", UserController.create);
 
 // Get all users
-router.get("/", authMiddleware, UserController.getAll);
+router.get("/getUsers", authMiddleware, UserController.getAll);
 
 // Get a single user by ID
-router.get("/:id", authMiddleware, UserController.getById);
+router.get("/getUser", authMiddleware, UserController.getById);
 
 // Update a user
-router.put("/:id", authMiddleware, authAdminMiddleware, UserController.update);
+router.post(
+  "/updateUser",
+  authMiddleware,
+  authAdminMiddleware,
+  UserController.update
+);
 
 // Delete a user
-router.delete(
-  "/:id",
+router.post(
+  "/deleteUser",
   authMiddleware,
   authAdminMiddleware,
   UserController.delete
 );
 
 // Delete all users
-router.delete(
-  "/",
+router.post(
+  "/deleteAllUsers",
   authMiddleware,
   authAdminMiddleware,
   UserController.deleteAll
