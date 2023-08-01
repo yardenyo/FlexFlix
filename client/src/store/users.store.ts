@@ -3,9 +3,13 @@ import usersApi from "@/api/users.api";
 import { ref, reactive, computed } from "vue";
 import helpers from "@/helpers/app.helpers";
 import { T_CreateUser } from "@/types/users.types";
+import { S_State } from "@/types/system.types";
 
 export const useUsersStore = defineStore("useUsersStore", () => {
-	const loading = ref<boolean>(false);
+	const state = reactive<S_State>({
+		loading: false,
+	});
+
 	const createUserPayload = reactive<T_CreateUser>({
 		username: "",
 		email: "",
@@ -14,7 +18,7 @@ export const useUsersStore = defineStore("useUsersStore", () => {
 	});
 
 	async function stateCreateUser() {
-		loading.value = true;
+		state.loading = true;
 		return await usersApi
 			.createUser(createUserPayload)
 			.then((res) => {
@@ -25,12 +29,12 @@ export const useUsersStore = defineStore("useUsersStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				loading.value = false;
+				state.loading = false;
 			});
 	}
 
 	async function stateGetAllUsers() {
-		loading.value = true;
+		state.loading = true;
 		return await usersApi
 			.getAllUsers()
 			.then((res) => {
@@ -41,12 +45,12 @@ export const useUsersStore = defineStore("useUsersStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				loading.value = false;
+				state.loading = false;
 			});
 	}
 
 	async function stateGetUserByID(id: string) {
-		loading.value = true;
+		state.loading = true;
 		return await usersApi
 			.getUserById(id)
 			.then((res) => {
@@ -58,12 +62,12 @@ export const useUsersStore = defineStore("useUsersStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				loading.value = false;
+				state.loading = false;
 			});
 	}
 
 	return {
-		loading,
+		state,
 		createUserPayload,
 		stateCreateUser,
 		stateGetAllUsers,

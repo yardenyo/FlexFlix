@@ -10,7 +10,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 		loading: false,
 	});
 
-	const loginParams = reactive<T_Login>({
+	const loginPayload = reactive<T_Login>({
 		email: "",
 		password: "",
 		remember: false,
@@ -19,7 +19,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 	async function stateLogin() {
 		state.loading = true;
 		return await authApi
-			.login(loginParams)
+			.login(loginPayload)
 			.then((res) => {
 				helpers.status(res);
 				localStorage.setItem("jwt-token", res.data.token.token);
@@ -38,7 +38,7 @@ export const useAuthStore = defineStore("useAuthStore", () => {
 
 	return {
 		state,
-		loginParams,
+		loginPayload,
 		stateLogin,
 	};
 });
