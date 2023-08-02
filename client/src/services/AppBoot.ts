@@ -102,9 +102,10 @@ class Boot {
 	 * @returns void
 	 */
 	async loadAppGeneralSettings(config: any) {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			if (config.authenticated) {
-				const generalSettings = appApi.fetchAppGeneralSettings();
+				const response = await appApi.fetchAppGeneralSettings();
+				const generalSettings = response.data.data;
 				resolve({ config, generalSettings });
 			}
 			resolve({ config });
