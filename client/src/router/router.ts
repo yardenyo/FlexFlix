@@ -2,6 +2,7 @@ import routes from "@/router/routes";
 import { createRouter, createWebHistory } from "vue-router";
 import helpers from "@/helpers/app.helpers";
 import Tr from "@/services/i18n/translation";
+import { useAppStore } from "@/store/app.store";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,7 +10,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	const isAuthenticated = !helpers.isNil(localStorage.getItem("jwt-token"));
+	const { appConfig } = useAppStore();
+	const isAuthenticated = appConfig.authenticated;
 	const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 	const requiresRedirect = to.matched.some((record) => record.meta.requiresRedirect);
 
