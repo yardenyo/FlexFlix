@@ -15,7 +15,6 @@ import router from "@/router/router";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 import resetStore from "@/services/ResetStore";
-import helpers from "@/helpers/app.helpers";
 import appApi from "@/api/app.api";
 import i18n from "@/services/i18n/index";
 
@@ -26,13 +25,11 @@ class Boot {
 	app: any;
 	appStore: any;
 	menuStore: any;
-	isAuthenticated: boolean;
 
 	constructor(app: any) {
 		this.app = app;
 		this.appStore;
 		this.menuStore;
-		this.isAuthenticated = false;
 	}
 
 	/**
@@ -107,9 +104,7 @@ class Boot {
 	async loadAppGeneralSettings(config: any) {
 		return new Promise((resolve, reject) => {
 			if (config.authenticated) {
-				//? USER IS AUTHENTICATED
 				const generalSettings = appApi.fetchAppGeneralSettings();
-				this.isAuthenticated = true;
 				resolve({ config, generalSettings });
 			}
 			resolve({ config });
