@@ -10,6 +10,7 @@ const AppController = {
         timezone_datetime: helpers.getUserDateTime(),
         theme: "dark",
         routes: ["dashboard", "users", "roles", "permissions"],
+        authenticated: req.loggedIn || false,
       };
       res.status(200).json({ status: true, data: appConfig });
     } catch (err: any) {

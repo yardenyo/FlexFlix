@@ -15,7 +15,6 @@ import router from "@/router/router";
 import { createPinia } from "pinia";
 import PrimeVue from "primevue/config";
 import resetStore from "@/services/ResetStore";
-import helpers from "@/helpers/app.helpers";
 import appApi from "@/api/app.api";
 import i18n from "@/services/i18n/index";
 
@@ -26,13 +25,11 @@ class Boot {
 	app: any;
 	appStore: any;
 	menuStore: any;
-	isAuthenticated: boolean;
 
 	constructor(app: any) {
 		this.app = app;
 		this.appStore;
 		this.menuStore;
-		this.isAuthenticated = false;
 	}
 
 	/**
@@ -45,6 +42,8 @@ class Boot {
 		try {
 			this.appStore = useAppStore();
 			this.menuStore = useMenuStore();
+
+			this.appStore.updateAppConfig(config);
 		} catch (error) {
 			console.error(error);
 		}
@@ -93,8 +92,8 @@ class Boot {
 	 */
 
 	async loadAppConfig(app: any) {
-		const config = await appApi.fetchAppConfig();
-		return await this.loadAppGeneralSettings(config);
+		const response = await appApi.fetchAppConfig();
+		return await this.loadAppGeneralSettings(response.data.data);
 	}
 
 	/**
@@ -103,11 +102,10 @@ class Boot {
 	 * @returns void
 	 */
 	async loadAppGeneralSettings(config: any) {
-		return new Promise((resolve, reject) => {
-			if (!helpers.isNil(config.data.data.routes)) {
-				//? USER IS AUTHENTICATED
-				const generalSettings = appApi.fetchAppGeneralSettings();
-				this.isAuthenticated = true;
+		return new Promise(async (resolve, reject) => {
+			if (config.authenticated) {
+				const response = await appApi.fetchAppGeneralSettings();
+				const generalSettings = response.data.data;
 				resolve({ config, generalSettings });
 			}
 			resolve({ config });

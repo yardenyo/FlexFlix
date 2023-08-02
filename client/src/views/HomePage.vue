@@ -7,7 +7,7 @@
 				</div>
 				<div class="actions">
 					<LanguageSwitcher />
-					<Button :label="t('login.signIn')" severity="danger" @click="signIn" />
+					<Button :label="computedLabel" severity="danger" @click="computedAction" />
 				</div>
 			</div>
 			<div class="content">
@@ -40,7 +40,11 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useVuelidate } from "@vuelidate/core";
 import { helpers, required, email } from "@vuelidate/validators";
+import { useAppStore } from "@/store/app.store";
+import { storeToRefs } from "pinia";
 
+const appStore = useAppStore();
+const { appConfig } = storeToRefs(appStore);
 const { t } = useI18n();
 const locale = localStorage.getItem("user-locale");
 const router = useRouter();
@@ -58,15 +62,22 @@ const rules = reactive({
 
 const v$ = useVuelidate(rules, state);
 
+const computedLabel = computed(() => {
+	return !appConfig.value?.authenticated ? t("login.signIn") : t("login.signOut");
+});
+
 function signUp() {
 	v$.value.$touch();
 	if (v$.value.$invalid) return;
-	console.log("sign up", state);
 	router.push({ name: "Signup" });
 }
 
-function signIn() {
-	router.push({ name: "Login" });
+function computedAction() {
+	if (appConfig.value?.authenticated) {
+		appStore.stateLogout();
+	} else {
+		router.push({ name: "Login" });
+	}
 }
 </script>
 

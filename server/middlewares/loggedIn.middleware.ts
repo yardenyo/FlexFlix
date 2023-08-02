@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 
-const authMiddleware = (req: any, res: any, next: any) => {
+const loggedInMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token: string | undefined = req.cookies.access_token;
   if (token) {
     jwt.verify(
@@ -8,16 +13,19 @@ const authMiddleware = (req: any, res: any, next: any) => {
       process.env.AUTH_SECRET || "my-secret",
       (err: any, decoded: any) => {
         if (err) {
-          return res.status(401).json({ message: "Unauthorized" });
+          req.loggedIn = false;
+          next();
         } else {
+          req.loggedIn = true;
           req.user = decoded;
           next();
         }
       }
     );
   } else {
-    return res.status(401).json({ message: "Unauthorized" });
+    req.loggedIn = false;
+    next();
   }
 };
 
-export default authMiddleware;
+export default loggedInMiddleware;
