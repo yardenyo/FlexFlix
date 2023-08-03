@@ -20,11 +20,7 @@ const PermissionsController = {
         .withMessage("Description must be at least 3 characters long"),
     ];
 
-    const passedValidation = await validate(registrationRules)(
-      req,
-      res,
-      () => {}
-    );
+    const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
       res.status(500).json({ status: false, message: "Something went wrong" });
@@ -63,7 +59,7 @@ const PermissionsController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  getAll: async function (req: Request, res: Response): Promise<void> {
+  getAll: async function (res: Response): Promise<void> {
     try {
       const permissions = await Permission.find();
       res.status(200).json({
@@ -179,11 +175,7 @@ const PermissionsController = {
         .withMessage("Description must be at least 3 characters long"),
     ];
 
-    const passedValidation = await validate(registrationRules)(
-      req,
-      res,
-      () => {}
-    );
+    const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
       res.status(500).json({ status: false, message: "Something went wrong" });
@@ -240,7 +232,7 @@ const PermissionsController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  deleteAll: async function (req: Request, res: Response): Promise<void> {
+  deleteAll: async function (res: Response): Promise<void> {
     try {
       const permissions = await Permission.find();
       if (helpers.isNil(permissions) || !permissions) {

@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 const loggedInMiddleware = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   const token: string | undefined = req.cookies.access_token;

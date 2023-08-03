@@ -6,6 +6,7 @@ import passport from "passport";
 import passportConfig from "../config/passport.config";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import path from "path";
 
 // Routes
 import appRoutes from "../routes/app.routes";
@@ -38,5 +39,16 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/roles", roleRoutes);
 app.use("/permissions", permissionRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    express.static(path.resolve(__dirname, "../../../", "client", "dist"))
+  );
+  app.get("*", (_req, res) => {
+    res.sendFile(
+      path.resolve(__dirname, "../../../", "client", "dist", "index.html")
+    );
+  });
+}
 
 export default app;

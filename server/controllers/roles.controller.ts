@@ -18,11 +18,7 @@ const RolesController = {
         .withMessage("Permissions must be an array"),
     ];
 
-    const passedValidation = await validate(registrationRules)(
-      req,
-      res,
-      () => {}
-    );
+    const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
       res.status(500).json({ status: false, message: "Something went wrong" });
@@ -48,7 +44,7 @@ const RolesController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  getAll: async function (req: Request, res: Response): Promise<void> {
+  getAll: async function (res: Response): Promise<void> {
     try {
       const roles = await Roles.find();
       res.status(200).json({
@@ -79,11 +75,7 @@ const RolesController = {
         .withMessage("Name must be at least 3 characters long"),
     ];
 
-    const passedValidation = await validate(registrationRules)(
-      req,
-      res,
-      () => {}
-    );
+    const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
       res.status(500).json({ status: false, message: "Something went wrong" });
@@ -123,7 +115,7 @@ const RolesController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  deleteAll: async function (req: Request, res: Response): Promise<void> {
+  deleteAll: async function (res: Response): Promise<void> {
     try {
       await Roles.deleteMany({});
       res.status(200).json({

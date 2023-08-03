@@ -18,7 +18,7 @@ const AppController = {
     }
   },
 
-  fetchGeneralSettings: function (req: Request, res: Response): void {
+  fetchGeneralSettings: function (_req: Request, res: Response): void {
     try {
       const appGeneralSettings: T_AppGeneralSettings = {
         try123: "try123",
