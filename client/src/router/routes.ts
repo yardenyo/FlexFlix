@@ -1,5 +1,6 @@
 import { RouterView } from "vue-router";
 import Tr from "@/services/i18n/translation";
+import isAuthenticated from "@/helpers/guards/isAuthenticated.guards";
 
 const routes = [
 	{
@@ -30,17 +31,12 @@ const routes = [
 				path: "signup",
 				name: "Signup",
 				component: () => import("@/views/SignupPage.vue"),
-				meta: {
-					requiresRedirect: true,
-				},
 			},
 			{
 				path: "dashboard",
 				name: "Dashboard",
 				component: () => import("@/views/DashboardPage.vue"),
-				meta: {
-					requiresAuth: true,
-				},
+				beforeEnter: [isAuthenticated],
 			},
 		],
 	},
