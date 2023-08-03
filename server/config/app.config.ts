@@ -15,6 +15,9 @@ import authRoutes from "../routes/auth.routes";
 import roleRoutes from "../routes/roles.routes";
 import permissionRoutes from "../routes/permissions.routes";
 
+// Middlewares
+import errorHandlerMiddleware from "../middlewares/errorHandler.middleware";
+
 dotenv.config();
 
 const app = express();
@@ -39,6 +42,8 @@ app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/roles", roleRoutes);
 app.use("/permissions", permissionRoutes);
+
+app.use(errorHandlerMiddleware);
 
 if (process.env.NODE_ENV === "production") {
   app.use(

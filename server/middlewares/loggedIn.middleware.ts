@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-const loggedInMiddleware = (
+async function loggedInMiddleware(
   req: Request,
   _res: Response,
   next: NextFunction
-) => {
+): Promise<void> {
   const token: string | undefined = req.cookies.access_token;
   if (token) {
     jwt.verify(
@@ -26,6 +26,6 @@ const loggedInMiddleware = (
     req.loggedIn = false;
     next();
   }
-};
+}
 
 export default loggedInMiddleware;

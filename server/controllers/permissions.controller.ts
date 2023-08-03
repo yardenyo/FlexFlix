@@ -1,12 +1,17 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import helpers from "../helpers/app.helpers";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware";
 import Permission from "../models/permissions.model";
 import Role from "../models/roles.model";
+import HttpException from "../exceptions/HttpException";
 
 const PermissionsController = {
-  create: async function (req: Request, res: Response): Promise<void> {
+  create: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const registrationRules = [
       body("name")
         .notEmpty()
@@ -23,8 +28,7 @@ const PermissionsController = {
     const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
-      return;
+      return next(new HttpException(500, "Something went wrong"));
     }
 
     try {
@@ -37,10 +41,7 @@ const PermissionsController = {
 
       const adminRoles = await Role.find({ name: "admin" });
       if (helpers.isNil(adminRoles) || !adminRoles) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
       adminRoles.forEach(async (role) => {
         role.permissions.push(permission._id);
@@ -56,10 +57,14 @@ const PermissionsController = {
         },
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getAll: async function (res: Response): Promise<void> {
+  getAll: async function (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const permissions = await Permission.find();
       res.status(200).json({
@@ -67,10 +72,14 @@ const PermissionsController = {
         data: permissions,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getById: async function (req: Request, res: Response): Promise<void> {
+  getById: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const permission = await Permission.findById(req.body.id);
       res.status(200).json({
@@ -78,17 +87,18 @@ const PermissionsController = {
         data: permission,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  assign: async function (req: Request, res: Response): Promise<void> {
+  assign: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const role = await Role.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       const permissions = await Permission.find({
@@ -96,10 +106,7 @@ const PermissionsController = {
       });
 
       if (helpers.isNumpty(permissions) || !permissions) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       permissions.forEach(async (permission) => {
@@ -118,17 +125,18 @@ const PermissionsController = {
         },
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  remove: async function (req: Request, res: Response): Promise<void> {
+  remove: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const role = await Role.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       const permissions = await Permission.find({
@@ -136,10 +144,7 @@ const PermissionsController = {
       });
 
       if (helpers.isNumpty(permissions) || !permissions) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       permissions.forEach(async (permission) => {
@@ -158,10 +163,14 @@ const PermissionsController = {
         },
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  update: async function (req: Request, res: Response): Promise<void> {
+  update: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const registrationRules = [
       body("name")
         .notEmpty()
@@ -178,8 +187,7 @@ const PermissionsController = {
     const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
-      return;
+      return next(new HttpException(500, "Something went wrong"));
     }
 
     try {
@@ -197,25 +205,23 @@ const PermissionsController = {
         data: permission,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  delete: async function (req: Request, res: Response): Promise<void> {
+  delete: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const permission = await Permission.findById(req.body.id);
       if (helpers.isNil(permission) || !permission) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       const roles = await Role.find({ permissions: permission._id });
       if (helpers.isNil(roles) || !roles) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       roles.forEach(async (role) => {
@@ -229,17 +235,18 @@ const PermissionsController = {
         message: "Permission deleted successfully",
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  deleteAll: async function (res: Response): Promise<void> {
+  deleteAll: async function (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const permissions = await Permission.find();
       if (helpers.isNil(permissions) || !permissions) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       permissions.forEach(async (permission) => {
@@ -269,7 +276,7 @@ const PermissionsController = {
         message: "All permissions deleted successfully",
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
 };

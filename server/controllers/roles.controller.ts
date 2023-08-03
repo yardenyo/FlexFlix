@@ -1,11 +1,16 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import Roles from "../models/roles.model";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware";
 import helpers from "../helpers/app.helpers";
+import HttpException from "../exceptions/HttpException";
 
 const RolesController = {
-  create: async function (req: Request, res: Response): Promise<void> {
+  create: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const registrationRules = [
       body("name")
         .notEmpty()
@@ -21,8 +26,7 @@ const RolesController = {
     const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
-      return;
+      return next(new HttpException(500, "Something went wrong"));
     }
 
     try {
@@ -41,10 +45,14 @@ const RolesController = {
         },
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getAll: async function (res: Response): Promise<void> {
+  getAll: async function (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const roles = await Roles.find();
       res.status(200).json({
@@ -52,10 +60,14 @@ const RolesController = {
         data: roles,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getById: async function (req: Request, res: Response): Promise<void> {
+  getById: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const role = await Roles.findById(req.body.id);
       res.status(200).json({
@@ -63,10 +75,14 @@ const RolesController = {
         data: role,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  update: async function (req: Request, res: Response): Promise<void> {
+  update: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const registrationRules = [
       body("name")
         .notEmpty()
@@ -78,17 +94,13 @@ const RolesController = {
     const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
-      return;
+      return next(new HttpException(500, "Something went wrong"));
     }
 
     try {
       const role = await Roles.findById(req.body.id);
       if (helpers.isNil(role) || !role) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
 
       role.name = req.body.name;
@@ -100,10 +112,14 @@ const RolesController = {
         data: role,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  delete: async function (req: Request, res: Response): Promise<void> {
+  delete: async function (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const role = await Roles.findByIdAndDelete(req.body.id);
       res.status(200).json({
@@ -112,10 +128,14 @@ const RolesController = {
         data: role,
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  deleteAll: async function (res: Response): Promise<void> {
+  deleteAll: async function (
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       await Roles.deleteMany({});
       res.status(200).json({
@@ -123,7 +143,7 @@ const RolesController = {
         message: "All roles deleted successfully",
       });
     } catch (error) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
 };
