@@ -1,5 +1,3 @@
-import { Request } from "express";
-
 export type T_AppConfig = {
   timezone: string;
   timezone_datetime: string;

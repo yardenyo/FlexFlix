@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import helpers from "../helpers/app.helpers";
 
 const AuthController = {
-  login: function (req: Request, res: Response, next: NextFunction): void {
-    passport.authenticate("local", (err: any, user: any, info: any) => {
+  login: function (req: Request, res: Response): void {
+    passport.authenticate("local", (err: any, user: any) => {
       if (err || helpers.isNil(user) || !user) {
-        return res.status(400).json({
+        res.status(400).json({
           message: "Something went wrong",
           status: false,
         });
@@ -15,7 +15,7 @@ const AuthController = {
 
       req.logIn(user, { session: false }, (err: any) => {
         if (err) {
-          return res.status(400).json({
+          res.status(400).json({
             message: "Something went wrong",
             status: false,
           });
@@ -35,7 +35,7 @@ const AuthController = {
           httpOnly: true,
         });
 
-        return res.status(200).json({
+        res.status(200).json({
           message: "Login successful",
           status: true,
           user: {
@@ -44,7 +44,7 @@ const AuthController = {
           },
         });
       });
-    })(req, res, next);
+    })(req, res);
   },
 
   logout: function (req: Request, res: Response): void {
@@ -55,6 +55,7 @@ const AuthController = {
           status: false,
         });
       }
+      return;
     });
 
     res.clearCookie("access_token");

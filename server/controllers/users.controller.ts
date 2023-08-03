@@ -26,11 +26,7 @@ const UserController = {
       body("role").notEmpty().isString().withMessage("Role is required"),
     ];
 
-    const passedValidation = await validate(registrationRules)(
-      req,
-      res,
-      () => {}
-    );
+    const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
       res.status(500).json({ status: false, message: "Something went wrong" });
@@ -69,7 +65,7 @@ const UserController = {
       res.status(500).json({ status: false, message: "Something went wrong" });
     }
   },
-  getAll: async function (req: Request, res: Response): Promise<void> {
+  getAll: async function (res: Response): Promise<void> {
     try {
       const users = await User.find();
       res.status(200).json({ status: true, data: users, message: "All users" });
@@ -120,7 +116,7 @@ const UserController = {
       res.status(500).json({ message: err.message });
     }
   },
-  deleteAll: async function (req: Request, res: Response): Promise<void> {
+  deleteAll: async function (res: Response): Promise<void> {
     try {
       const users = await User.deleteMany();
       res

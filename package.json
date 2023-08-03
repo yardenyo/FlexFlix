@@ -1,0 +1,14 @@
+{
+  "name": "flexflix",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node server/dist/server.js",
+    "client:build": "cd client && npm install && npm run build",
+    "server:build": "cd server && npm install && npm run build",
+    "build": "npm run server:build && npm run client:build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
