@@ -60,7 +60,11 @@ const AuthController = {
       return;
     });
 
-    res.clearCookie("access_token");
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      sameSite: "none" as const,
+      secure: true,
+    });
     res.status(200).json({ message: "Logout successful", status: true });
   },
 };
