@@ -3,7 +3,7 @@ import UserModel from "../models/users.model";
 import Role from "../models/roles.model";
 import { ERoles } from "../enums/roles.enums";
 import { T_PassedUser } from "../types/users.types";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 async function authAdminMiddleware(
   req: Request,

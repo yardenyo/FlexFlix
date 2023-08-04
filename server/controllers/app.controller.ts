@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import helpers from "../helpers/app.helpers";
 import { T_AppConfig, T_AppGeneralSettings } from "./../types/app.types";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 const AppController = {
   fetchAppConfig: function (

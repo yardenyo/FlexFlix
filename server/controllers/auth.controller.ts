@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import helpers from "../helpers/app.helpers";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 const AuthController = {
   login: function (req: Request, res: Response, next: NextFunction): void {
@@ -32,14 +32,15 @@ const AuthController = {
           secure: true,
         });
 
-        return res.status(200).json({
-          message: "Login successful",
-          status: true,
+        req.body = {
           user: {
             email: user.email,
             username: user.username,
           },
-        });
+        };
+
+        req.message = "Login successful";
+        return next();
       });
     })(req, res);
   },
@@ -57,7 +58,9 @@ const AuthController = {
       sameSite: "none" as const,
       secure: true,
     });
-    res.status(200).json({ message: "Logout successful", status: true });
+
+    req.message = "Logout successful";
+    return next();
   },
 };
 

@@ -3,7 +3,7 @@ import Roles from "../models/roles.model";
 import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware";
 import helpers from "../helpers/app.helpers";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 const RolesController = {
   create: async function (

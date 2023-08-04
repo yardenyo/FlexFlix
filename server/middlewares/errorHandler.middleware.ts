@@ -1,7 +1,7 @@
 //error handler middleware
 
 import { Request, Response, NextFunction } from "express";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 function errorHandlerMiddleware(
   error: HttpException,

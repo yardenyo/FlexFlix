@@ -4,7 +4,7 @@ import { body } from "express-validator";
 import validate from "../middlewares/validation.middleware";
 import Permission from "../models/permissions.model";
 import Role from "../models/roles.model";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 const PermissionsController = {
   create: async function (

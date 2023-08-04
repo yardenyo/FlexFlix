@@ -5,7 +5,7 @@ import Role from "../models/roles.model";
 import bcrypt from "bcrypt";
 import helpers from "../helpers/app.helpers";
 import validate from "../middlewares/validation.middleware";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../responses/HttpException";
 
 const UserController = {
   create: async function (
