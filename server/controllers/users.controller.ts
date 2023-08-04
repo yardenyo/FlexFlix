@@ -1,13 +1,18 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { body } from "express-validator";
 import User from "../models/users.model";
 import Role from "../models/roles.model";
 import bcrypt from "bcrypt";
 import helpers from "../helpers/app.helpers";
 import validate from "../middlewares/validation.middleware";
+import HttpException from "../responses/HttpException";
 
 const UserController = {
-  create: async function (req: Request, res: Response): Promise<void> {
+  create: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const registrationRules = [
       body("username")
         .notEmpty()
@@ -29,17 +34,13 @@ const UserController = {
     const passedValidation = await validate(registrationRules)(req);
 
     if (!passedValidation) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
-      return;
+      return next(new HttpException(500, "Something went wrong"));
     }
 
     try {
       const role = await Role.findOne({ name: req.body.role });
       if (helpers.isNil(role) || !role) {
-        res
-          .status(500)
-          .json({ status: false, message: "Something went wrong" });
-        return;
+        return next(new HttpException(500, "Something went wrong"));
       }
       let user = new User({
         username: req.body.username,
@@ -52,78 +53,108 @@ const UserController = {
       user.password = await bcrypt.hash(user.password, salt);
 
       await user.save();
-      res.status(200).json({
-        status: true,
-        data: {
+      req.body = {
+        user: {
           username: user.username,
           email: user.email,
           role: user.role,
         },
-        message: "User created",
-      });
+      };
+      req.message = "User created successfully";
+      return next();
     } catch (err: any) {
-      res.status(500).json({ status: false, message: "Something went wrong" });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getAll: async function (res: Response): Promise<void> {
+  getAll: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const users = await User.find();
-      res.status(200).json({ status: true, data: users, message: "All users" });
+      req.body = users;
+      req.message = "All users";
+      return next();
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  getById: async function (req: Request, res: Response): Promise<void> {
+  getById: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const user = await User.findById(req.body.id);
       if (helpers.isNil(user) || !user) {
-        res.status(200).json({ status: false, message: "User not found" });
+        return next(new HttpException(500, "Something went wrong"));
       }
-      res.status(200).json({ status: true, data: user, message: "User found" });
+      req.body = user;
+      req.message = "User found";
+      return next();
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  update: async function (req: Request, res: Response): Promise<void> {
+  update: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const user = await User.findById(req.body.id);
       if (helpers.isNil(user) || !user) {
-        res.status(200).json({ status: false, message: "User not found" });
+        return next(new HttpException(500, "Something went wrong"));
       } else {
         user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
         user.password = req.body.password || user.password;
 
         await user.save();
-        res
-          .status(200)
-          .json({ status: true, data: user, message: "User updated" });
+        req.body = {
+          user: {
+            username: user.username,
+            email: user.email,
+            role: user.role,
+          },
+        };
+        req.message = "User updated successfully";
+        return next();
       }
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  delete: async function (req: Request, res: Response): Promise<void> {
+  delete: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const user = await User.findByIdAndDelete(req.body.id);
       if (helpers.isNil(user) || !user) {
-        res.status(200).json({ status: false, message: "User not found" });
+        return next(new HttpException(500, "Something went wrong"));
       }
-      res
-        .status(200)
-        .json({ status: true, data: user, message: "User deleted" });
+      req.body = user;
+      req.message = "User deleted successfully";
+      return next();
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
-  deleteAll: async function (res: Response): Promise<void> {
+  deleteAll: async function (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
       const users = await User.deleteMany();
-      res
-        .status(200)
-        .json({ status: true, data: users, message: "All users deleted" });
+      req.body = users;
+      req.message = "All users deleted";
+      return next();
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      return next(new HttpException(500, "Something went wrong"));
     }
   },
 };

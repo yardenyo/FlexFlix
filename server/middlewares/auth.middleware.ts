@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const authMiddleware = (req: any, res: any, next: any) => {
+function authMiddleware(req: any, res: any, next: any): void {
   const token: string | undefined = req.cookies.access_token;
   if (token) {
     jwt.verify(
@@ -18,6 +18,6 @@ const authMiddleware = (req: any, res: any, next: any) => {
   } else {
     return res.status(401).json({ message: "Unauthorized" });
   }
-};
+}
 
 export default authMiddleware;

@@ -1,24 +1,19 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import helpers from "../helpers/app.helpers";
+import HttpException from "../responses/HttpException";
 
 const AuthController = {
-  login: function (req: Request, res: Response): void {
+  login: function (req: Request, res: Response, next: NextFunction): void {
     passport.authenticate("local", (err: any, user: any) => {
       if (err || helpers.isNil(user) || !user) {
-        res.status(400).json({
-          message: "Something went wrong",
-          status: false,
-        });
+        return next(new HttpException(400, "Something went wrong"));
       }
 
       req.logIn(user, { session: false }, (err: any) => {
         if (err) {
-          res.status(400).json({
-            message: "Something went wrong",
-            status: false,
-          });
+          return next(new HttpException(400, "Something went wrong"));
         }
         const token = jwt.sign(
           { id: user._id },
@@ -37,25 +32,23 @@ const AuthController = {
           secure: true,
         });
 
-        res.status(200).json({
-          message: "Login successful",
-          status: true,
+        req.body = {
           user: {
             email: user.email,
             username: user.username,
           },
-        });
+        };
+
+        req.message = "Login successful";
+        return next();
       });
     })(req, res);
   },
 
-  logout: function (req: Request, res: Response): void {
+  logout: function (req: Request, res: Response, next: NextFunction): void {
     req.logout((err: any) => {
       if (err) {
-        return res.status(400).json({
-          message: "Something went wrong",
-          status: false,
-        });
+        return next(new HttpException(400, "Something went wrong"));
       }
       return;
     });
@@ -65,7 +58,9 @@ const AuthController = {
       sameSite: "none" as const,
       secure: true,
     });
-    res.status(200).json({ message: "Logout successful", status: true });
+
+    req.message = "Logout successful";
+    return next();
   },
 };
 
