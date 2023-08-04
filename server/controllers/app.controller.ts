@@ -6,7 +6,7 @@ import HttpException from "../responses/HttpException";
 const AppController = {
   fetchAppConfig: function (
     req: Request,
-    res: Response,
+    _res: Response,
     next: NextFunction
   ): void {
     try {
@@ -17,22 +17,24 @@ const AppController = {
         routes: ["dashboard", "users", "roles", "permissions"],
         authenticated: req.loggedIn || false,
       };
-      res.status(200).json({ status: true, data: appConfig });
+      req.body = appConfig;
+      return next();
     } catch (err: any) {
       return next(new HttpException(500, "Something went wrong"));
     }
   },
 
   fetchGeneralSettings: function (
-    _req: Request,
-    res: Response,
+    req: Request,
+    _res: Response,
     next: NextFunction
   ): void {
     try {
       const appGeneralSettings: T_AppGeneralSettings = {
         try123: "try123",
       };
-      res.status(200).json({ status: true, data: appGeneralSettings });
+      req.body = appGeneralSettings;
+      return next();
     } catch (err: any) {
       return next(new HttpException(500, "Something went wrong"));
     }
