@@ -77,7 +77,7 @@ async function login() {
 		.stateLogin()
 		.then(() => {
 			invalidCredentials.value = false;
-			router.push({ name: "Home" });
+			window.location.href = "/";
 		})
 		.catch(() => {
 			invalidCredentials.value = true;
