@@ -11,7 +11,7 @@ import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 
 const store = useAppStore();
-const { state } = storeToRefs(store);
+const { appState } = storeToRefs(store);
 const router = useRouter();
 const { t } = useI18n();
 </script>
