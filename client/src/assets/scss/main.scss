@@ -30,7 +30,8 @@ html {
 // primevue components styling
 
 .p-button {
-	width: fit-content !important;
+	min-width: fit-content !important;
+	width: 100% !important;
 	background-color: $red !important;
 	border: $button-border !important;
 	padding: $button-padding !important;
