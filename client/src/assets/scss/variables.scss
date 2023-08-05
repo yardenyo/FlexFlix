@@ -10,10 +10,9 @@ $input-bg-focus: #454545;
 $red: #dc2626;
 $error-message: #e87c03;
 $footer-color: #737373;
-$homepage-container: linear-gradient(146.51deg, rgba(0, 8, 29, 0.75) 0%, rgba(53, 13, 49, 0.6) 80.34%, rgba(132, 5, 25, 0.6) 110.79%);
-$homepage-full: rgba(0, 8, 29, 1);
-$homepage-main-div: linear-gradient(65.68deg, rgba(0, 8, 29, 0.6) 9.51%, rgba(53, 13, 49, 0.6) 72.89%, rgba(132, 5, 25, 0.6) 101.01%),
-	linear-gradient(102.21deg, rgba(0, 0, 0, 0.04) 16.09%, rgba(1, 1, 1, 0.17) 39.27%, rgba(1, 1, 1, 0.24) 64.25%, rgba(4, 4, 4, 0.8) 96.63%),
+$divider: rgb(35, 35, 35);
+$homepage-container: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%);
+$homepage-main-div: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%),
 	url(https://assets.nflxext.com/ffe/siteui/vlv3/efb4855d-e702-43e5-9997-bba0154152e0/fc42e11d-843f-4e76-9e2c-da8f96350833/IL-en-20230417-popsignuptwoweeks-perspective_alpha_website_large.jpg);
 
 $black: #000;
