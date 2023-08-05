@@ -1,12 +1,13 @@
 import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
+import { reactive } from "vue";
 import helpers from "@/helpers/app.helpers";
-import appApi from "@/api/app.api";
 import authApi from "@/api/auth.api";
 import { S_AppConfig, S_State, S_Login } from "@/types/system.types";
+import { useFormStateMachine } from "@/services/xState/appMachine";
 
 export const useAppStore = defineStore("useAppStore", () => {
-	const state = reactive<S_State>({
+	const { current, send } = useFormStateMachine();
+	const appState = reactive<S_State>({
 		loading: false,
 	});
 
@@ -27,15 +28,21 @@ export const useAppStore = defineStore("useAppStore", () => {
 	const appGeneralSettings = reactive<object>({});
 
 	async function updateAppConfig(config: S_AppConfig) {
+		send({ type: "CHECK_AUTH" });
 		appConfig.timezone = config.timezone;
 		appConfig.timezone_datetime = config.timezone_datetime;
 		appConfig.theme = config.theme;
 		appConfig.routes = config.routes;
 		appConfig.authenticated = config.authenticated;
+		if (config.authenticated) {
+			send({ type: "AUTHENTICATED" });
+		} else {
+			send({ type: "UNAUTHENTICATED" });
+		}
 	}
 
 	async function stateLogin() {
-		state.loading = true;
+		appState.loading = true;
 		return await authApi
 			.login(loginPayload)
 			.then((res) => {
@@ -46,12 +53,12 @@ export const useAppStore = defineStore("useAppStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				state.loading = false;
+				appState.loading = false;
 			});
 	}
 
 	async function stateLogout() {
-		state.loading = true;
+		appState.loading = true;
 		return await authApi
 			.logout()
 			.then((res) => {
@@ -62,12 +69,13 @@ export const useAppStore = defineStore("useAppStore", () => {
 				throw err;
 			})
 			.finally(() => {
-				state.loading = false;
+				appState.loading = false;
 			});
 	}
 
 	return {
-		state,
+		current,
+		appState,
 		appConfig,
 		loginPayload,
 		appGeneralSettings,

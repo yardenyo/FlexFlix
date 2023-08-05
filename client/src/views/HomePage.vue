@@ -46,7 +46,6 @@ import { storeToRefs } from "pinia";
 const appStore = useAppStore();
 const { appConfig } = storeToRefs(appStore);
 const { t } = useI18n();
-const locale = localStorage.getItem("user-locale");
 const router = useRouter();
 
 const state = reactive({

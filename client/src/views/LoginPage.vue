@@ -20,7 +20,7 @@
 						</form>
 					</div>
 					<div class="signup">
-						<Button :label="$t('login.signIn')" severity="danger" :loading="state.loading" @click="login" />
+						<Button :label="$t('login.signIn')" severity="danger" :loading="appState.loading" @click="login" />
 						<small v-if="invalidCredentials" class="invalid-credentials">{{ $t("login.invalidCredentials") }}</small>
 						<div class="signup-wrapper">
 							<div class="remember-section">
@@ -52,7 +52,7 @@ import { useI18n } from "vue-i18n";
 import LoginFooter from "@/components/LoginFooter.vue";
 
 const store = useAppStore();
-const { state, loginPayload } = storeToRefs(store);
+const { appState, loginPayload } = storeToRefs(store);
 const router = useRouter();
 const invalidCredentials = ref(false);
 const { t } = useI18n();
