@@ -73,7 +73,9 @@ function signUp() {
 
 function computedAction() {
 	if (appConfig.value?.authenticated) {
-		appStore.stateLogout();
+		appStore.stateLogout().then(() => {
+			window.location.href = "/";
+		});
 	} else {
 		router.push({ name: "Login" });
 	}
