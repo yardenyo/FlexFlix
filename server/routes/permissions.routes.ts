@@ -2,6 +2,7 @@ import express from "express";
 import PermissionController from "../controllers/permissions.controller";
 import authMiddleware from "../middlewares/auth.middleware";
 import authAdminMiddleware from "../middlewares/authAdmin.middleware";
+import successResponseMiddleware from "../middlewares/successResponse.middleware";
 
 const router = express.Router();
 
@@ -58,5 +59,7 @@ router.post(
   authAdminMiddleware,
   PermissionController.deleteAll
 );
+
+router.use(successResponseMiddleware);
 
 export default router;

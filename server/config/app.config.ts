@@ -16,7 +16,6 @@ import roleRoutes from "../routes/roles.routes";
 import permissionRoutes from "../routes/permissions.routes";
 
 // Middlewares
-import successResponseMiddleware from "../middlewares/successResponse.middleware";
 import errorHandlerMiddleware from "../middlewares/errorHandler.middleware";
 
 dotenv.config();
@@ -44,7 +43,6 @@ app.use("/auth", authRoutes);
 app.use("/roles", roleRoutes);
 app.use("/permissions", permissionRoutes);
 
-app.use(successResponseMiddleware);
 app.use(errorHandlerMiddleware);
 
 if (process.env.NODE_ENV === "production") {

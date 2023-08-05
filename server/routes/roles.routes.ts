@@ -2,6 +2,7 @@ import express from "express";
 import RoleController from "../controllers/roles.controller";
 import authMiddleware from "../middlewares/auth.middleware";
 import authAdminMiddleware from "../middlewares/authAdmin.middleware";
+import successResponseMiddleware from "../middlewares/successResponse.middleware";
 
 const router = express.Router();
 
@@ -42,5 +43,7 @@ router.post(
   authAdminMiddleware,
   RoleController.deleteAll
 );
+
+router.use(successResponseMiddleware);
 
 export default router;
