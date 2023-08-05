@@ -3,7 +3,7 @@ import { reactive } from "vue";
 import helpers from "@/helpers/app.helpers";
 import authApi from "@/api/auth.api";
 import { S_AppConfig, S_State, S_Login } from "@/types/system.types";
-import { useFormStateMachine } from "@/services/xState/appMachine";
+import { useFormStateMachine } from "@/services/xState/authMachine";
 
 export const useAppStore = defineStore("useAppStore", () => {
 	const { current, send } = useFormStateMachine();
