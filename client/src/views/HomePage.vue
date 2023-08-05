@@ -14,17 +14,19 @@
 				<div class="content">
 					<div class="title">{{ t("home.mainDiv.title") }}</div>
 					<div class="description">{{ t("home.mainDiv.subtitle") }}</div>
-					<div class="start-watching">{{ t("home.mainDiv.startWatching") }}</div>
-					<div class="email-input-wrapper">
-						<div class="email-input">
-							<InputText v-model="state.email" :placeholder="$t('login.emailAddress')" />
-							<small v-if="v$.email.$error" class="error-message">
-								<i class="pi pi-times-circle"></i>
-								{{ v$.email.$errors[0].$message }}
-							</small>
-						</div>
-						<div class="get-started">
-							<Button :label="t('home.mainDiv.getStarted')" severity="danger" @click="signUp" />
+					<div class="start-watching-wrapper">
+						<div class="start-watching">{{ t("home.mainDiv.startWatching") }}</div>
+						<div class="email-input-wrapper">
+							<div class="email-input">
+								<InputText v-model="state.email" :placeholder="$t('login.emailAddress')" />
+								<small v-if="v$.email.$error" class="error-message">
+									<i class="pi pi-times-circle"></i>
+									{{ v$.email.$errors[0].$message }}
+								</small>
+							</div>
+							<div class="get-started">
+								<Button :label="t('home.mainDiv.getStarted')" severity="danger" @click="signUp" />
+							</div>
 						</div>
 					</div>
 				</div>
@@ -141,10 +143,15 @@ $content-height: calc(#{$welcome-section-height} - #{$header-height});
 				justify-content: center;
 				align-items: center;
 				height: $content-height;
-				gap: 4rem;
+				gap: 1rem;
+
+				//every child
+				& > div {
+					padding: 1.5rem;
+				}
 
 				.title {
-					font-size: 3.5rem;
+					font-size: 4rem;
 					font-weight: 1000;
 				}
 
@@ -152,49 +159,56 @@ $content-height: calc(#{$welcome-section-height} - #{$header-height});
 					font-size: 2rem;
 				}
 
-				.start-watching {
-					font-size: 1.5rem;
-				}
-
-				.email-input-wrapper {
+				.start-watching-wrapper {
 					display: flex;
+					flex-direction: column;
 					align-items: center;
-					gap: 1rem;
-					.email-input {
-						position: relative;
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						gap: 1rem;
-
-						.error-message {
-							position: absolute;
-							bottom: -1.5rem;
-							left: 0;
-							color: $red;
-							font-size: 1rem;
-						}
-
-						:deep(.p-inputtext) {
-							border-radius: 4px;
-							width: 25rem;
-							height: 4rem;
-							padding: 0 1rem;
-							background: transparent;
-							background-color: rgba(0, 0, 0, 0.5);
-							border: 1px solid rgba(255, 255, 255, 0.5);
-							font-size: 1.2rem;
-							font-weight: 600;
-							color: $white;
-						}
+					gap: 1.5rem;
+					.start-watching {
+						font-size: 1.5rem;
 					}
 
-					.get-started {
-						:deep(.p-button) {
-							border-radius: 4px;
-							width: 12rem;
-							height: 4rem;
-							padding: 0 1rem;
+					.email-input-wrapper {
+						display: flex;
+						align-items: center;
+						gap: 1rem;
+						.email-input {
+							position: relative;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							gap: 1rem;
+
+							.error-message {
+								position: absolute;
+								bottom: -1.5rem;
+								left: 0;
+								color: $red;
+								font-size: 1rem;
+							}
+
+							:deep(.p-inputtext) {
+								border-radius: 4px;
+								width: 30rem;
+								height: 4rem;
+								padding: 0 1rem;
+								background: transparent;
+								background-color: rgba(0, 0, 0, 0.5);
+								border: 1px solid rgba(255, 255, 255, 0.5);
+								font-size: 1.2rem;
+								font-weight: 600;
+								color: $white;
+							}
+						}
+
+						.get-started {
+							:deep(.p-button) {
+								border-radius: 4px;
+								width: 12rem;
+								height: 4rem;
+								padding: 0 1rem;
+								font-size: 1.5rem;
+							}
 						}
 					}
 				}

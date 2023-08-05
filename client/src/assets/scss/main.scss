@@ -26,3 +26,16 @@ html {
 		height: 100%;
 	}
 }
+
+// primevue components styling
+
+.p-button {
+	width: fit-content !important;
+	background-color: $red !important;
+	border: $button-border !important;
+	padding: $button-padding !important;
+
+	&:hover {
+		background-color: $red-hover !important;
+	}
+}
