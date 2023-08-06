@@ -31,6 +31,7 @@
 					</div>
 				</div>
 			</div>
+			<HeroCards :cards="heroCards" />
 		</div>
 	</div>
 </template>
@@ -41,14 +42,44 @@ import { useAppStore } from "@/store/app.store";
 import { useVuelidate } from "@vuelidate/core";
 import { email, helpers, required } from "@vuelidate/validators";
 import { storeToRefs } from "pinia";
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import HeroCards from "@/components/HeroCards.vue";
 
 const appStore = useAppStore();
 const { appConfig } = storeToRefs(appStore);
 const { t } = useI18n();
 const router = useRouter();
+
+const heroCards = ref([
+	{
+		id: 1,
+		title: t("home.heroCards.card1.title"),
+		description: t("home.heroCards.card1.description"),
+		image: "https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png",
+		video: "https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/video-tv-0819.m4v",
+	},
+	{
+		id: 2,
+		title: t("home.heroCards.card2.title"),
+		description: t("home.heroCards.card2.description"),
+		image: "https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg",
+	},
+	{
+		id: 3,
+		title: t("home.heroCards.card3.title"),
+		description: t("home.heroCards.card3.description"),
+		image: "https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/device-pile.png",
+		video: "https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/video-devices.m4v",
+	},
+	{
+		id: 4,
+		title: t("home.heroCards.card4.title"),
+		description: t("home.heroCards.card4.description"),
+		image: "https://occ-0-1855-768.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABejKYujIIDQciqmGJJ8BtXkYKKTi5jiqexltvN1YmvXYIfX8B9CYwooUSIzOKneblRFthZAFsYLMgKMyNfeHwk16DmEkpIIcb6A3.png?r=f55",
+	},
+]);
 
 const state = reactive({
 	email: "",
@@ -145,7 +176,6 @@ $content-height: calc(#{$welcome-section-height} - #{$header-height});
 				height: $content-height;
 				gap: 1rem;
 
-				//every child
 				& > div {
 					padding: 1.5rem;
 				}
