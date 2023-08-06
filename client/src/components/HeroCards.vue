@@ -4,7 +4,7 @@
 			<div class="hero-card-media">
 				<div class="media-wrapper">
 					<img v-if="card.image" :src="card.image" />
-					<div v-if="card.video" class="video-wrapper">
+					<div v-if="card.video" :class="['video-wrapper', index === 0 ? 'first-video' : 'second-video']">
 						<video :src="card.video" autoplay loop muted></video>
 					</div>
 				</div>
@@ -78,28 +78,28 @@ const props = defineProps({
 				}
 
 				.video-wrapper {
-					video {
-						z-index: 0;
-						overflow: hidden;
-						width: 100%;
-						height: 100%;
-						position: absolute;
-						-webkit-transform: translate(-50%, -50%);
-						-moz-transform: translate(-50%, -50%);
-						-ms-transform: translate(-50%, -50%);
-						transform: translate(-50%, -50%);
-						&:first-child {
-							max-width: 73%;
-							max-height: 54%;
-							top: 46%;
-							left: 50%;
-						}
+					position: absolute;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					width: 100%;
+					height: auto;
 
-						&:nth-child(2) {
-							max-width: 63%;
-							max-height: 47%;
-							top: 34%;
-							left: 50%;
+					&.first-video {
+						max-width: 73%;
+						max-height: 54%;
+						top: 48%;
+					}
+
+					&.second-video {
+						max-width: 63%;
+						max-height: 47%;
+						top: 38%;
+
+						video {
+							width: 100%;
+							height: 100%;
+							z-index: 0;
+							object-fit: cover;
 						}
 					}
 				}
