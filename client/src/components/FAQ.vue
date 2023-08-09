@@ -2,14 +2,14 @@
 	<div class="faq">
 		<div class="questions">
 			<ul class="questions-list">
-				<li v-for="item in faq" :key="item.id" class="question">
+				<li v-for="item in state.faqItems" :key="item.id" class="question">
 					<h3>
 						<button @click="toggleAnswer(item.id)">
 							<span>{{ item.question }}</span>
 							<i :class="item.expanded ? 'pi pi-times' : 'pi pi-plus'"></i>
 						</button>
 					</h3>
-					<div class="answer-wrapper">
+					<div :class="['answer-wrapper', { expanded: item.expanded }]">
 						<span>{{ item.answer }}</span>
 					</div>
 				</li>
@@ -149,12 +149,17 @@ const toggleAnswer = (itemId: number) => {
 						overflow: hidden;
 						visibility: visible;
 						max-height: 0px px;
-						padding: 0px 1.5rem;
 						transition: all 0.25s cubic-bezier(0.5, 0, 0.1, 1) 0s;
 						text-align: left;
 						background-color: rgb(45, 45, 45);
 						color: rgb(255, 255, 255);
 					}
+				}
+
+				.expanded {
+					max-height: 75rem;
+					padding-bottom: 1.5rem;
+					padding-top: 1.5rem;
 				}
 			}
 		}
