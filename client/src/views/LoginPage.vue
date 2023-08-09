@@ -1,5 +1,5 @@
 <template>
-	<div class="login-page" :dir="$i18n.locale === 'he' ? 'rtl' : 'ltr'">
+	<div class="login-page">
 		<div class="logo-section" @click="router.push('/')">
 			<img class="logo" src="/src/assets/netflix-logo.svg" alt="flexflix logo" />
 		</div>
@@ -271,8 +271,9 @@ $footer-section-height: 262px;
 	}
 }
 
-@media screen and (max-width: $mobile-screen) {
+@media screen and (max-width: $small-screen) {
 	.login-page {
+		height: 100vh;
 		background: $background;
 		.content {
 			.login-container {
