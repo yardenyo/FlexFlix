@@ -2,32 +2,35 @@
 	"en": "English",
 	"he": "Hebrew",
 	"home": {
-		"mainDiv": {
-			"title": "Unlimited movies, TV shows, and more.",
-			"subtitle": "Watch anywhere. Cancel anytime.",
-			"startWatching": "Ready to watch? Enter your email to create or restart your membership.",
-			"email": "Email address",
-			"getStarted": "Get Started >"
-		},
 		"heroCards": {
-			"card1": {
+			"mainDiv": {
+				"title": "Unlimited movies, TV shows, and more.",
+				"description": "Watch anywhere. Cancel anytime.",
+				"startWatching": "Ready to watch? Enter your email to create or restart your membership.",
+				"email": "Email address"
+			},
+			"watchOnTv": {
 				"title": "Enjoy on your TV.",
 				"description": "Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more."
 			},
-			"card2": {
+			"downloadAndWatch": {
 				"title": "Download your shows to watch offline.",
 				"description": "Save your favorites easily and always have something to watch."
 			},
-			"card3": {
+			"watchOnDevice": {
 				"title": "Watch everywhere.",
 				"description": "Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV."
 			},
-			"card4": {
+			"kidsValueProp": {
 				"title": "Create profiles for kids.",
 				"description": "Send kids on adventures with their favorite characters in a space made just for them—free with your membership."
+			},
+			"faq": {
+				"title": "Frequently Asked Questions"
 			}
 		}
 	},
+	"getStarted": "Get Started >",
 	"login": {
 		"signIn": "Sign In",
 		"signOut": "Log Out",

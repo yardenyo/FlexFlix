@@ -1,5 +1,5 @@
 <template>
-	<div class="sign-up" :dir="$i18n.locale === 'he' ? 'rtl' : 'ltr'">1234</div>
+	<div class="sign-up">1234</div>
 </template>
 
 <script setup lang="ts">

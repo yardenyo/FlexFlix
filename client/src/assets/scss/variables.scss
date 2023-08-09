@@ -11,13 +11,16 @@ $error-message: #e87c03;
 $footer-color: #737373;
 $divider: rgb(35, 35, 35);
 $homepage-container: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%);
-$homepage-main-div: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%),
-	url(https://assets.nflxext.com/ffe/siteui/vlv3/efb4855d-e702-43e5-9997-bba0154152e0/fc42e11d-843f-4e76-9e2c-da8f96350833/IL-en-20230417-popsignuptwoweeks-perspective_alpha_website_large.jpg);
 
 $black: #000;
 $white: #fff;
 
-$mobile-screen: 740px;
+//Media Queries
+$mobile-screen: 600px;
+$small-screen: 740px;
+$small-tablet-screen: 960px;
+$tablet-screen: 1280px;
+$desktop-screen: 1920px;
 
 //Buttons	Style
 $red: rgb(229, 9, 20);
